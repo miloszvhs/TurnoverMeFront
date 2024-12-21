@@ -1,0 +1,15 @@
+<div class="invoice-card" *ngFor="let invoice of invoices">
+  <h2>Invoice Number: {{ invoice.number }}</h2>
+  <p>Amount: {{ invoice.amount | currency }}</p>
+  <p>Status:
+    <span [ngClass]="{
+      'pending': invoice.status === 'Pending',
+      'rejected': invoice.status === 'Rejected',
+      'approved': invoice.status === 'Approved'
+    }">
+      <i *ngIf="invoice.status === 'Pending'" class="fas fa-hourglass-half" title="Pending"></i>
+      <i *ngIf="invoice.status === 'Rejected'" class="fas fa-times-circle" title="Rejected"></i>
+      <i *ngIf="invoice.status === 'Approved'" class="fas fa-check-circle" title="Approved"></i>
+    </span>
+  </p>
+</div>
