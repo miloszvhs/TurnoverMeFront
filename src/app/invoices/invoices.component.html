@@ -1,1 +1,8 @@
-<p>invoices works!</p>
+<div *ngFor="let invoice of invoices" class="invoice-card">
+  <h2>Invoice Number: {{ invoice.guid }}</h2>
+  <p>Name: {{ invoice.name }}</p>
+  <p>Status: {{ invoice.status }}</p>
+  <p>Creation Date: {{ invoice.creationDate }}</p>
+  <p>Modification Date: {{ invoice.modificationDate }}</p>
+  <p>Invoice File: {{ invoice.invoiceFileAsBase64 }}</p>
+</div>

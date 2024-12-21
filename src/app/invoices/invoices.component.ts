@@ -1,11 +1,24 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { InvoiceService } from '../invoice.service';
+import { InvoiceAcceptationDto } from '../Dtos/invoice-acceptation-dto';
+import {NgForOf} from '@angular/common';
 
 @Component({
   selector: 'app-invoices',
-  imports: [],
   templateUrl: './invoices.component.html',
-  styleUrl: './invoices.component.css'
+  imports: [
+    NgForOf
+  ],
+  styleUrls: ['./invoices.component.css']
 })
-export class InvoicesComponent {
+export class InvoicesComponent implements OnInit {
+  invoices: InvoiceAcceptationDto[] = [];
 
+  constructor(private invoiceService: InvoiceService) { }
+
+  ngOnInit(): void {
+    this.invoiceService.getInvoices().subscribe(data => {
+      this.invoices = data;
+    });
+  }
 }
