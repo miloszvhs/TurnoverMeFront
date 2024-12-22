@@ -1,7 +1,25 @@
-<div *ngFor="let invoice of invoices" class="invoice-card">
+<div class="invoice-card" *ngFor="let invoice of invoices" [ngClass]="{
+  'pending-card': invoice.status === InvoiceStatusDto.Pending,
+  'rejected-card': invoice.status === InvoiceStatusDto.Rejected,
+  'approved-card': invoice.status === InvoiceStatusDto.Approved,
+  'paid-card': invoice.status === InvoiceStatusDto.Paid
+}">
   <h2>Invoice Number: {{ invoice.guid }}</h2>
   <p>Name: {{ invoice.name }}</p>
-  <p>Status: {{ invoice.status }}</p>
+  <p>Status:
+    <span [ngClass]="{
+      'pending': invoice.status === InvoiceStatusDto.Pending,
+      'rejected': invoice.status === InvoiceStatusDto.Rejected,
+      'approved': invoice.status === InvoiceStatusDto.Approved,
+      'paid': invoice.status === InvoiceStatusDto.Paid
+    }">
+      {{ getInvoiceStatusName(invoice.status) }}
+      <i *ngIf="invoice.status === InvoiceStatusDto.Pending" class="fas fa-hourglass-half" title="Pending"></i>
+      <i *ngIf="invoice.status === InvoiceStatusDto.Rejected" class="fas fa-times-circle" title="Rejected"></i>
+      <i *ngIf="invoice.status === InvoiceStatusDto.Approved" class="fas fa-check-circle" title="Approved"></i>
+      <i *ngIf="invoice.status === InvoiceStatusDto.Paid" class="fas fa-dollar-sign" title="Paid"></i>
+    </span>
+  </p>
   <p>Creation Date: {{ invoice.creationDate }}</p>
   <p>Modification Date: {{ invoice.modificationDate }}</p>
   <p>Invoice File: {{ invoice.invoiceFileAsBase64 }}</p>
