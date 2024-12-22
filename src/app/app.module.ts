@@ -13,6 +13,7 @@ import { CommonModule } from '@angular/common';
     BrowserModule,
     AppRoutingModule,
     CommonModule,
+
     AppComponent,
     MainPageComponent,
     InvoicesComponent,
