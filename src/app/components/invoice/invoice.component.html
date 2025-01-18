@@ -1,0 +1,44 @@
+<div class="p-4 bg-white shadow-md rounded-lg">
+  <h2 class="text-xl font-semibold mb-4">Invoices</h2>
+  <div class="overflow-x-auto">
+    <table class="min-w-full bg-white border border-gray-200">
+      <thead>
+      <tr>
+        <th class="px-4 py-2 border-b">Invoice Number</th>
+        <th class="px-4 py-2 border-b">Name</th>
+        <th class="px-4 py-2 border-b">Status</th>
+        <th class="px-4 py-2 border-b">Creation Date</th>
+        <th class="px-4 py-2 border-b">Modification Date</th>
+        <th class="px-4 py-2 border-b">Invoice File</th>
+        <th class="px-4 py-2 border-b">Actions</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let invoice of invoices" class="hover:bg-gray-100">
+        <td class="px-4 py-2 border-b">{{ invoice.guid }}</td>
+        <td class="px-4 py-2 border-b">{{ invoice.name }}</td>
+        <td class="px-4 py-2 border-b">
+            <span [ngClass]="{
+              'pending': invoice.status === InvoiceStatusDto.Pending,
+              'rejected': invoice.status === InvoiceStatusDto.Rejected,
+              'approved': invoice.status === InvoiceStatusDto.Approved,
+              'paid': invoice.status === InvoiceStatusDto.Paid
+            }">
+              {{ getInvoiceStatusName(invoice.status) }}
+              <i *ngIf="invoice.status === InvoiceStatusDto.Pending" class="fas fa-hourglass-half" title="Pending"></i>
+              <i *ngIf="invoice.status === InvoiceStatusDto.Rejected" class="fas fa-times-circle" title="Rejected"></i>
+              <i *ngIf="invoice.status === InvoiceStatusDto.Approved" class="fas fa-check-circle" title="Approved"></i>
+              <i *ngIf="invoice.status === InvoiceStatusDto.Paid" class="fas fa-dollar-sign" title="Paid"></i>
+            </span>
+        </td>
+        <td class="px-4 py-2 border-b">{{ invoice.creationDate }}</td>
+        <td class="px-4 py-2 border-b">{{ invoice.modificationDate }}</td>
+        <td class="px-4 py-2 border-b">{{ invoice.invoiceFileAsBase64 }}</td>
+        <td class="px-4 py-2 border-b">
+          <a class="text-blue-500 hover:underline" [routerLink]="['/invoices', invoice.guid]">View Details</a>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

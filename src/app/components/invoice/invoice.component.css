@@ -53,3 +53,27 @@
 .paid-card {
   background-color: #d1ecf1;
 }
+
+.mat-elevation-z8 {
+  margin: 20px;
+}
+
+.mat-header-cell, .mat-cell {
+  padding: 8px;
+}
+
+.pending {
+  color: orange;
+}
+
+.rejected {
+  color: red;
+}
+
+.approved {
+  color: green;
+}
+
+.paid {
+  color: blue;
+}

@@ -1,3 +1,5 @@
 import { InjectionToken } from '@angular/core';
 
-export const API_URL = new InjectionToken<string>('API_URL');
+export const API_INVOICING_ACCEPTATION = new InjectionToken<string>('API_INVOICING_ACCEPTATION');
+export const API_INVOICING_INVOICES = new InjectionToken<string>('API_INVOICING_INVOICES');
+export const API_INVOICING = new InjectionToken<string>('API_INVOICING');

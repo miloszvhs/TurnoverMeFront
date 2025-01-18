@@ -2,10 +2,11 @@ import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { AppComponent } from './app.component';
 import { MainPageComponent } from './main-page/main-page.component';
-import { InvoicesComponent } from './invoices/invoices.component';
 import { AboutComponent } from './about/about.component';
-import { AppRoutingModule } from './app-routing.module';
 import { CommonModule } from '@angular/common';
+import {InvoiceComponent} from './components/invoice/invoice.component';
+import {AppRoutingModule} from './app.routes';
+import {InvoiceAcceptationComponent} from './components/invoice-acceptation/invoice-acceptation.component';
 
 @NgModule({
   declarations: [],
@@ -16,7 +17,8 @@ import { CommonModule } from '@angular/common';
 
     AppComponent,
     MainPageComponent,
-    InvoicesComponent,
+    InvoiceComponent,
+    InvoiceAcceptationComponent,
     AboutComponent
   ],
   providers: [],

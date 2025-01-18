@@ -1,0 +1,4 @@
+/* Styl dla wierszy tabeli, które reagują na kliknięcie */
+.clickable-row {
+  cursor: pointer;
+}
