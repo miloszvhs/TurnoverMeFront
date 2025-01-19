@@ -2,19 +2,25 @@ import {InvoiceStatusDto} from './Enums/invoice-status-dto';
 
 export class InvoiceDto {
   guid: string;
-  name: string;
+  invoiceNumber: string;
   status: InvoiceStatusDto;
   creationDate: string;
-  modificationDate: string;
-  invoiceFileAsBase64: string;
+  saleDate: string;
+  stage: string;
+  procedure: string;
+  responsiblePerson: any;
+  issueDate: Date;
 
-  constructor(guid: string, name: string, status: InvoiceStatusDto, creationDate: string, modificationDate: string, invoiceFileAsBase64: string) {
+  constructor(guid: string, invoiceNumber: string, status: InvoiceStatusDto, creationDate: string, saleDate: string, stage: string, procedure: string, responsiblePerson: string, issueDate: Date) {
     this.guid = guid;
-    this.name = name;
+    this.invoiceNumber = invoiceNumber
     this.status = status;
     this.creationDate = creationDate;
-    this.modificationDate = modificationDate;
-    this.invoiceFileAsBase64 = invoiceFileAsBase64;
+    this.saleDate = saleDate;
+    this.stage = stage;
+    this.procedure = procedure;
+    this.responsiblePerson = responsiblePerson;
+    this.issueDate = issueDate;
   }
 }
 

@@ -3,7 +3,8 @@ import { HttpClient } from '@angular/common/http';
 import {map, Observable} from 'rxjs';
 import {InvoiceAcceptationDto} from '../../Dtos/invoice-acceptation-dto';
 import {InvoiceStatusDto} from '../../Dtos/Enums/invoice-status-dto';
-import {API_INVOICING_ACCEPTATION} from '../../api-url.token';
+import {API_INVOICING_INVOICES} from '../../api-url.token';
+import {InvoiceDto} from '../../Dtos/Invoice-dto';
 
 @Injectable({
   providedIn: 'root'
@@ -11,12 +12,12 @@ import {API_INVOICING_ACCEPTATION} from '../../api-url.token';
 export class InvoiceAcceptationService {
   private apiUrl: string;
 
-  constructor(private http: HttpClient, @Inject(API_INVOICING_ACCEPTATION) apiUrl: string) {
+  constructor(private http: HttpClient, @Inject(API_INVOICING_INVOICES) apiUrl: string) {
     this.apiUrl = `${apiUrl}`;
   }
 
-  getInvoiceAcceptation(): Observable<InvoiceAcceptationDto[]> {
-    return this.http.get<string[]>(`${this.apiUrl}/all`).pipe(
+  getInvoices(): Observable<InvoiceDto[]> {
+    return this.http.get<string[]>(`${this.apiUrl}`).pipe(
       map(data => data.map(item => this.mapToInvoiceAcceptationDto(item)))
     );
   }

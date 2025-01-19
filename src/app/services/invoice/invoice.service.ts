@@ -1,7 +1,6 @@
 import {Inject, Injectable} from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import {map, Observable} from 'rxjs';
-import {InvoiceAcceptationDto} from '../../Dtos/invoice-acceptation-dto';
 import {InvoiceStatusDto} from '../../Dtos/Enums/invoice-status-dto';
 import {API_INVOICING_INVOICES} from '../../api-url.token';
 import {InvoiceDto} from '../../Dtos/Invoice-dto';
@@ -27,7 +26,7 @@ export class InvoiceService {
   }
 
   getInvoices(): Observable<InvoiceDto[]> {
-    return this.http.get<string[]>(`${this.apiUrl}/all`).pipe(
+    return this.http.get<string[]>(`${this.apiUrl}`).pipe(
       map(data => data.map(item => this.mapToInvoiceDto(item)))
     );
   }
@@ -35,11 +34,14 @@ export class InvoiceService {
   private mapToInvoiceDto(data: any): InvoiceDto {
     return {
       guid: data.guid,
-      name: data.name,
+      invoiceNumber: data.number,
       status: data.status as InvoiceStatusDto,
       creationDate: data.creationDate,
-      modificationDate: data.modificationDate,
-      invoiceFileAsBase64: data.invoiceFileAsBase64
+      saleDate: data.saleDate,
+      stage: "1",
+      procedure: "Procedura A",
+      responsiblePerson: "Kinga",
+      issueDate: new Date(),
     };
   }
 }

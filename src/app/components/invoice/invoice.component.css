@@ -77,3 +77,7 @@
 .paid {
   color: blue;
 }
+
+.clickable-row {
+  cursor: pointer;
+}

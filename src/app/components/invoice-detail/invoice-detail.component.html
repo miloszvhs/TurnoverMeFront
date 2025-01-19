@@ -1,9 +1,7 @@
 <div *ngIf="invoice">
   <h2>Invoice Details</h2>
   <p><strong>Invoice Number:</strong> {{ invoice.guid }}</p>
-  <p><strong>Name:</strong> {{ invoice.name }}</p>
+  <p><strong>Name:</strong> {{ invoice.invoiceNumber }}</p>
   <p><strong>Status:</strong> {{ invoice.status }}</p>
   <p><strong>Creation Date:</strong> {{ invoice.creationDate }}</p>
-  <p><strong>Modification Date:</strong> {{ invoice.modificationDate }}</p>
-  <p><strong>Invoice File:</strong> {{ invoice.invoiceFileAsBase64 }}</p>
 </div>

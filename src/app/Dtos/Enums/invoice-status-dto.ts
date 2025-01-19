@@ -1,6 +1,6 @@
 export enum InvoiceStatusDto {
-  Approved,
-  Pending,
-  Rejected,
+  Draft,
+  Sent,
+  Printed,
   Paid
 }
