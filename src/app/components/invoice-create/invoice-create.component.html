@@ -1,0 +1,359 @@
+<form action="" method="post" id="myForm" class="p-6 bg-white shadow-lg rounded-lg space-y-6">
+  <input type="hidden" name="invoice[data][sent]" value="1">
+  <input type="hidden" name="invoice[data][sent_print]" value="0" id="sent_print">
+  <input type="hidden" name="invoice[data][invoice_type]" value="0">
+  <input type="hidden" name="invoice[data][pdf_type]" value="0" id="pdf_type">
+  <input type="hidden" name="invoice[data][sek30]" value="1" id="sek30">
+
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+    <div>
+      <label for="invoice_type" class="block text-sm font-medium text-gray-700">Type:</label>
+      <select name="invoice[data][invoice_type]" class="w-full mt-1 p-2 border rounded-lg" id="invoice_type">
+        <option value="0" selected>VAT Invoice</option>
+        <option value="1">Proforma Invoice</option>
+        <option value="4">Corrective Invoice</option>
+        <option value="11">Advance Invoice</option>
+      </select>
+    </div>
+    <div>
+      <label for="invoice_number" class="block text-sm font-medium text-gray-700">Number:</label>
+      <input type="text" name="invoice[data][invoice_number]" value="INV 1/02/2025" class="w-full mt-1 p-2 border rounded-lg" id="invoice_number">
+    </div>
+    <div>
+      <label for="issue_date" class="block text-sm font-medium text-gray-700">Issue Date:</label>
+      <input type="date" name="invoice[data][issue_date]" value="2025-02-01" class="w-full mt-1 p-2 border rounded-lg" id="issue_date">
+    </div>
+    <div>
+      <label for="place_of_issue" class="block text-sm font-medium text-gray-700">Place of Issue:</label>
+      <input type="text" name="invoice[data][place_of_issue]" class="w-full mt-1 p-2 border rounded-lg" id="place_of_issue">
+    </div>
+  </div>
+
+  <h3 class="text-lg font-semibold mt-4">Seller</h3>
+  <div class="grid grid-cols-1 gap-4">
+    <textarea name="invoice[seller][name]" class="w-full p-2 border rounded-lg" id="seller_name" placeholder="Enter full company name"></textarea>
+    <div>
+      <label for="seller_nip" class="block text-sm font-medium text-gray-700">NIP:</label>
+      <input type="text" name="invoice[seller][nip]" class="w-full mt-1 p-2 border rounded-lg" id="seller_nip">
+    </div>
+  </div>
+
+  <h3 class="text-lg font-semibold mt-4">Buyer</h3>
+  <div class="grid grid-cols-1 gap-4">
+    <textarea name="invoice[buyer][name]" class="w-full p-2 border rounded-lg" id="buyer_name" placeholder="Enter full company name"></textarea>
+    <div>
+      <label for="buyer_nip" class="block text-sm font-medium text-gray-700">NIP:</label>
+      <input type="text" name="invoice[buyer][nip]" class="w-full mt-1 p-2 border rounded-lg" id="buyer_nip">
+    </div>
+  </div>
+
+  <h4 class="text-lg font-semibold mt-4">Invoice Items</h4>
+  <div class="overflow-x-auto">
+    <table class="w-full border border-gray-200">
+      <thead class="bg-gray-100">
+      <tr>
+        <th class="px-4 py-2 border">Name</th>
+        <th class="px-4 py-2 border">Quantity</th>
+        <th class="px-4 py-2 border">Unit</th>
+        <th class="px-4 py-2 border">Net Price</th>
+        <th class="px-4 py-2 border">Actions</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr>
+        <td class="px-4 py-2 border"><input type="text" name="invoice_items[1][name]" class="w-full p-2 border rounded-lg"></td>
+        <td class="px-4 py-2 border"><input type="text" name="invoice_items[1][quantity]" class="w-full p-2 border rounded-lg"></td>
+        <td class="px-4 py-2 border"><select name="invoice_items[1][unit]" class="w-full p-2 border rounded-lg">
+          <option value="pcs">pcs</option>
+          <option value="kg">kg</option>
+        </select></td>
+        <td class="px-4 py-2 border"><input type="text" name="invoice_items[1][net_price]" class="w-full p-2 border rounded-lg"></td>
+        <td class="px-4 py-2 border"><button type="button" class="text-red-500 hover:underline">Remove</button></td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h4 class="text-lg font-semibold mt-4">Summary</h4>
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+    <div>
+      <label for="payment_method" class="block text-sm font-medium text-gray-700">Payment Method:</label>
+      <select name="invoice[data][payment_method]" class="w-full mt-1 p-2 border rounded-lg" id="payment_method">
+        <option value="Transfer" selected>Transfer</option>
+        <option value="Cash">Cash</option>
+      </select>
+    </div>
+    <div>
+      <label for="payment_term" class="block text-sm font-medium text-gray-700">Payment Term (days):</label>
+      <input type="text" name="invoice[data][payment_term]" class="w-full mt-1 p-2 border rounded-lg" id="payment_term" value="7">
+    </div>
+  </div>
+
+  <div class="text-center mt-4">
+    <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded-lg shadow-md hover:bg-blue-600">Download Invoice</button>
+    <button type="submit" class="bg-green-500 text-white px-4 py-2 rounded-lg shadow-md hover:bg-green-600">Print</button>
+  </div>
+
+  <!-- Seller and Buyer Information -->
+  <section class="bg-white p-6 rounded shadow space-y-6">
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <!-- Seller -->
+      <div>
+        <h2 class="text-2xl font-bold mb-4">Seller</h2>
+        <div class="mb-4">
+          <label for="sellerName" class="block font-medium mb-1">Name</label>
+          <textarea name="seller[name]" id="sellerName" rows="2" class="w-full border rounded p-2" onkeyup="breaks(this,45,0);"></textarea>
+        </div>
+        <div class="mb-4">
+          <label for="sellerStreet" class="block font-medium mb-1">Street</label>
+          <input type="text" name="seller[street]" id="sellerStreet" value="" class="w-full border rounded p-2 ac_input" autocomplete="off">
+        </div>
+        <div class="mb-4 grid grid-cols-2 gap-2">
+          <div>
+            <label for="sellerCity" class="block font-medium mb-1">City</label>
+            <input type="text" name="seller[city]" id="sellerCity" value="" class="w-full border rounded p-2 ac_input" autocomplete="off">
+          </div>
+          <div>
+            <label for="sellerPostal" class="block font-medium mb-1">Postal Code</label>
+            <input type="text" name="seller[postal]" id="sellerPostal" value="" size="9" class="w-full border rounded p-2 ac_input" autocomplete="off">
+          </div>
+        </div>
+        <div class="mb-4">
+          <label for="sellerTaxType" class="block font-medium mb-1">Tax Type</label>
+          <select name="seller[taxType]" id="sellerTaxType" class="w-full border rounded p-2">
+            <option value="0" selected>Tax ID</option>
+            <option value="1">Personal ID</option>
+            <option value="2">VAT UE</option>
+            <option value="3">REGON</option>
+          </select>
+        </div>
+        <div class="mb-4">
+          <label for="sellerTaxID" class="block font-medium mb-1">Tax ID</label>
+          <input type="text" name="seller[tax]" id="sellerTaxID" value="" class="w-full border rounded p-2">
+        </div>
+        <div class="mb-4">
+          <label for="sellerSignature" class="block font-medium mb-1">Signature</label>
+          <input type="text" name="seller[signature]" id="sellerSignature" value="" class="w-full border rounded p-2">
+        </div>
+        <div class="flex items-center">
+          <input type="checkbox" name="mpp" id="mpp" value="1" class="mr-2">
+          <label for="mpp" class="italic">Split Payment Mechanism</label>
+        </div>
+      </div>
+      <!-- Buyer -->
+      <div>
+        <h2 class="text-2xl font-bold mb-4">Buyer</h2>
+        <div class="mb-4">
+          <label for="buyerName" class="block font-medium mb-1">Name</label>
+          <textarea name="buyer[name]" id="buyerName" rows="2" class="w-full border rounded p-2" onkeyup="breaks(this,45,0);"></textarea>
+        </div>
+        <div class="mb-4">
+          <label for="buyerStreet" class="block font-medium mb-1">Street</label>
+          <input type="text" name="buyer[street]" id="buyerStreet" value="" class="w-full border rounded p-2 ac_input" autocomplete="off">
+        </div>
+        <div class="mb-4 grid grid-cols-2 gap-2">
+          <div>
+            <label for="buyerCity" class="block font-medium mb-1">City</label>
+            <input type="text" name="buyer[city]" id="buyerCity" value="" class="w-full border rounded p-2 ac_input" autocomplete="off">
+          </div>
+          <div>
+            <label for="buyerPostal" class="block font-medium mb-1">Postal Code</label>
+            <input type="text" name="buyer[postal]" id="buyerPostal" value="" size="9" class="w-full border rounded p-2 ac_input" autocomplete="off">
+          </div>
+        </div>
+        <div class="mb-4">
+          <label for="buyerTaxType" class="block font-medium mb-1">Tax Type</label>
+          <select name="buyer[taxType]" id="buyerTaxType" class="w-full border rounded p-2">
+            <option value="0" selected>Tax ID</option>
+            <option value="1">Personal ID</option>
+            <option value="2">VAT UE</option>
+            <option value="3">REGON</option>
+          </select>
+        </div>
+        <div class="mb-4">
+          <label for="buyerTaxID" class="block font-medium mb-1">Tax ID</label>
+          <input type="text" name="buyer[tax]" id="buyerTaxID" value="" class="w-full border rounded p-2">
+        </div>
+        <div class="mb-4">
+          <label for="buyerSignature" class="block font-medium mb-1">Signature</label>
+          <input type="text" name="buyer[signature]" id="buyerSignature" value="" class="w-full border rounded p-2">
+        </div>
+        <div class="mb-4">
+          <label for="recipientDesignation" class="block font-medium mb-1">Recipient Designation</label>
+          <select name="recipientDesignation" id="recipientDesignation" class="w-full border rounded p-2">
+            <option value="0" selected>Recipient</option>
+            <option value="1">Seller</option>
+            <option value="2">Buyer</option>
+            <option value="3">Supplier</option>
+            <option value="4">Creditor</option>
+            <option value="5">Debtor</option>
+            <option value="6">Payer</option>
+            <option value="7">Payee</option>
+            <option value="8">Lessor</option>
+            <option value="9">Lessee</option>
+            <option value="10">Vendor</option>
+            <option value="11">Purchaser</option>
+            <option value="12">Issuer</option>
+            <option value="13">Receiver</option>
+            <option value="14">Orderer</option>
+            <option value="15">Collector</option>
+            <option value="16">Payer</option>
+            <option value="17">Branch</option>
+            <option value="18">Issuer</option>
+            <option value="19">Note Issuer</option>
+            <option value="20">Delivery Address</option>
+            <option value="21">Correspondence Address</option>
+            <option value="22">Contractor</option>
+            <option value="23">Client</option>
+            <option value="24">No Designation</option>
+          </select>
+        </div>
+        <div>
+          <label for="buyerAdditional" class="block font-medium mb-1">Additional Information</label>
+          <textarea name="buyerAdditional" id="buyerAdditional" rows="3" class="w-full border rounded p-2" onkeyup="breaks(this,45,45);"></textarea>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Product / Service Details -->
+  <section class="bg-white p-6 rounded shadow">
+    <h2 class="text-2xl font-bold mb-4">Product / Service Details</h2>
+    <!-- Przykładowy wiersz produktu – kolejne wiersze możesz dodawać dynamicznie -->
+    <div class="grid grid-cols-1 md:grid-cols-10 gap-2 items-center">
+      <div class="text-center">1</div>
+      <div class="md:col-span-2">
+        <label for="product0" class="block font-medium mb-1">Product/Service Name</label>
+        <textarea name="productName[0]" id="product0" rows="2" class="w-full border rounded p-2" onkeyup="breaks(this,65,0);"></textarea>
+      </div>
+      <div>
+        <label for="unit0" class="block font-medium mb-1">Unit</label>
+        <select name="unit[0]" id="unit0" class="w-full border rounded p-2">
+          <option value="0" selected>service</option>
+          <option value="1">pcs</option>
+          <option value="2">pack</option>
+          <!-- Dodaj inne opcje według potrzeb -->
+        </select>
+      </div>
+      <div>
+        <label for="quantity0" class="block font-medium mb-1">Quantity</label>
+        <input type="text" name="quantity[0]" id="quantity0" value="1" class="w-full border rounded p-2" onkeyup="update(event, this, 0, true, 1, arr, false, 3, 0);">
+      </div>
+      <div>
+        <label for="netPrice0" class="block font-medium mb-1">Net Price</label>
+        <input type="text" name="netPrice[0]" id="netPrice0" value="0.00" class="w-full border rounded p-2" onkeyup="update(event, this, 0, true, 1, arr, false, 2, 0);">
+      </div>
+      <div>
+        <label for="netValue0" class="block font-medium mb-1">Net Value</label>
+        <input type="text" name="netValue[0]" id="netValue0" value="0.00" readonly class="w-full border rounded p-2 bg-readonly">
+      </div>
+      <div>
+        <label for="vatRate0" class="block font-medium mb-1">VAT Rate</label>
+        <select name="vatRate[0]" id="vatRate0" class="w-full border rounded p-2" onchange="update(event, this, 0, false, 1, arr, false, 0, 0);">
+          <option value="27">27%</option>
+          <option value="25">25%</option>
+          <option value="23" selected>23%</option>
+          <option value="22">22%</option>
+          <option value="21">21%</option>
+          <option value="20">20%</option>
+          <option value="19">19%</option>
+          <option value="16">16%</option>
+          <option value="15">15%</option>
+          <option value="9">9%</option>
+          <option value="8.5">8.5%</option>
+          <option value="8">8%</option>
+          <option value="7">7%</option>
+          <option value="5">5%</option>
+          <option value="3">3%</option>
+          <option value="0">0%</option>
+          <option value="zw">exempt</option>
+          <option value="np">not applicable</option>
+          <option value="oo">other</option>
+          <option value="-">-</option>
+        </select>
+      </div>
+      <div>
+        <label for="vatAmount0" class="block font-medium mb-1">VAT Amount</label>
+        <input type="text" name="vatAmount[0]" id="vatAmount0" value="0.00" readonly class="w-full border rounded p-2 bg-readonly">
+      </div>
+      <div>
+        <label for="grossValue0" class="block font-medium mb-1">Gross Value</label>
+        <input type="text" name="grossValue[0]" id="grossValue0" value="0.00" class="w-full border rounded p-2" onkeyup="update(event, this, 0, true, 1, arr, true, 0, 0);">
+      </div>
+      <div class="text-center space-x-2">
+        <button type="button" name="delete[0]" class="bg-red-500 text-white px-2 py-1 rounded">Delete</button>
+        <button type="button" name="save[0]" class="bg-blue-500 text-white px-2 py-1 rounded">Save</button>
+      </div>
+    </div>
+    <!-- Przycisk dodania kolejnego produktu -->
+    <div class="mt-4 flex justify-between items-center">
+      <button type="button" name="addProduct" class="bg-green-500 text-white px-4 py-2 rounded">Add Product</button>
+      <div class="flex space-x-4">
+        <div class="flex items-center">
+          <label class="font-bold mr-2">Net Total</label>
+          <input type="text" name="netTotal" value="0.00" readonly class="w-24 border rounded p-2 bg-readonly">
+        </div>
+        <div class="flex items-center">
+          <label class="font-bold mr-2">VAT Total</label>
+          <input type="text" name="vatTotal" value="0.00" readonly class="w-24 border rounded p-2 bg-readonly">
+        </div>
+        <div class="flex items-center">
+          <label class="font-bold mr-2">Gross Total</label>
+          <input type="text" name="grossTotal" value="0.00" readonly class="w-24 border rounded p-2 bg-readonly">
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Payment Information -->
+  <section class="bg-white p-6 rounded shadow space-y-4">
+    <h2 class="text-2xl font-bold mb-4">Payment Information</h2>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div>
+        <label for="paymentMethod" class="block font-medium mb-1">Payment Method</label>
+        <select name="paymentMethod" id="paymentMethod" onchange="term(this.value); this.form.submit();" class="w-full border rounded p-2">
+          <option value="0" selected>Bank Transfer</option>
+          <option value="18">Transfer within 2 days</option>
+          <option value="27">Transfer within 3 days</option>
+          <option value="19">Transfer within 7 days</option>
+          <option value="20">Transfer within 14 days</option>
+          <option value="24">Transfer within 21 days</option>
+          <option value="21">Transfer within 30 days</option>
+          <option value="26">Transfer within 45 days</option>
+          <option value="22">Transfer within 60 days</option>
+          <option value="1">Cash</option>
+          <option value="2">Cash on Delivery</option>
+          <option value="3">Paid by Transfer</option>
+          <option value="4">Paid in Cash</option>
+          <option value="5">Paid via Paypal.com</option>
+          <option value="6">Paid via Dotpay.pl</option>
+          <option value="7">Paid via Payu.pl</option>
+          <option value="8">Paid via Cashbill.pl</option>
+          <option value="17">Paid via Przelewy24.pl</option>
+          <option value="25">Paid via Tpay.com</option>
+          <option value="9">Credit Card</option>
+          <option value="10">Barter</option>
+          <option value="11">Cheque</option>
+          <option value="12">Bill of Exchange</option>
+          <option value="13">Compensation</option>
+          <option value="14">Letter of Credit</option>
+          <option value="15">Settled with Advance</option>
+          <option value="16">Payment Terminal</option>
+          <option value="23">Credit</option>
+        </select>
+      </div>
+      <div>
+        <label for="paymentDue" class="block font-medium mb-1">Payment Due Date</label>
+        <input type="text" name="paymentDue" id="paymentDue" value="14 days" class="w-full border rounded p-2 tcal tcalInput">
+      </div>
+      <div>
+        <label for="accountNumber" class="block font-medium mb-1">Account Number</label>
+        <textarea name="seller[account]" id="accountNumber" rows="2" class="w-full border rounded p-2" onkeyup="breaks(this,40,0);"></textarea>
+      </div>
+      <div>
+        <label for="vatAccountNumber" class="block font-medium mb-1">VAT Account Number</label>
+        <textarea name="seller[vatAccount]" id="vatAccountNumber" rows="2" class="w-full border rounded p-2" onkeyup="breaks(this,40,0);"></textarea>
+      </div>
+    </div>
+  </section>
+</form>

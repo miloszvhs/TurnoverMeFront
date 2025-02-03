@@ -1,0 +1,79 @@
+element.style {
+}
+*, :after, :before {
+  box-sizing: border-box;
+}
+*, :after, :before, input[type=checkbox], input[type=radio] {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+}
+* {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+arkusz stylów klienta użytkownika
+form {
+  display: block;
+  margin-top: 0em;
+  unicode-bidi: isolate;
+}
+body {
+  margin: 0;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-size: 13px;
+  color: #333;
+}
+.img-thumbnail, body {
+  line-height: 1.42857143;
+  background-color: #fff;
+}
+body {
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-size: 13px;
+  line-height: 1.42857143;
+  color: #333;
+  background-color: #fff;
+}
+html {
+  font-size: 10px;
+  -webkit-tap-highlight-color: transparent;
+  height: 100%;
+}
+html {
+  font-family: sans-serif;
+  -webkit-text-size-adjust: 100%;
+  -ms-text-size-adjust: 100%;
+}
+html {
+  font-size: 10px;
+}
+html {
+  font-family: sans-serif;
+  -webkit-text-size-adjust: 100%;
+  -ms-text-size-adjust: 100%;
+}
+*, :after, :before {
+  box-sizing: border-box;
+}
+*, :after, :before, input[type=checkbox], input[type=radio] {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+}
+:after, :before {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+*, :after, :before {
+  box-sizing: border-box;
+}
+*, :after, :before, input[type=checkbox], input[type=radio] {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+}
+:after, :before {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}

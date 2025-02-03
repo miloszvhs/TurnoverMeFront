@@ -2,7 +2,7 @@ import {Inject, Injectable} from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import {map, Observable} from 'rxjs';
 import {InvoiceStatusDto} from '../../Dtos/Enums/invoice-status-dto';
-import {API_INVOICING_INVOICES} from '../../api-url.token';
+import {API} from '../../api-url.token';
 import {InvoiceDto} from '../../Dtos/Invoice-dto';
 
 @Injectable({
@@ -11,7 +11,7 @@ import {InvoiceDto} from '../../Dtos/Invoice-dto';
 export class InvoiceService {
   private apiUrl: string;
 
-  constructor(private http: HttpClient, @Inject(API_INVOICING_INVOICES) apiUrl: string) {
+  constructor(private http: HttpClient, @Inject(API) apiUrl: string) {
     this.apiUrl = `${apiUrl}`;
   }
 
