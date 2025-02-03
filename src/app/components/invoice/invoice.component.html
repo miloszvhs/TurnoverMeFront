@@ -1,0 +1,153 @@
+<div class="p-6 bg-gray-50">
+  <h1 class="text-xl font-bold text-center mb-6">Elektroniczna Akceptacja Faktur</h1>
+
+  <!-- Filtry -->
+  <div class="grid grid-cols-4 gap-4 mb-6">
+    <div>
+      <label class="block text-sm font-medium mb-1">Etap:</label>
+      <select
+        class="w-full p-2 border border-gray-300 rounded"
+        [(ngModel)]="selectedStage"
+        (change)="applyFilters()"
+      >
+        <option value="Wszystkie">Wszystkie</option>
+        <option value="Etap 1">Etap 1</option>
+        <option value="Etap 2">Etap 2</option>
+      </select>
+    </div>
+    <div>
+      <label class="block text-sm font-medium mb-1">Procedura:</label>
+      <select
+        class="w-full p-2 border border-gray-300 rounded"
+        [(ngModel)]="selectedProcedure"
+        (change)="applyFilters()"
+      >
+        <option value="Wszystkie">Wszystkie</option>
+        <option value="Procedura A">Procedura A</option>
+        <option value="Procedura B">Procedura B</option>
+      </select>
+    </div>
+    <div>
+      <label class="block text-sm font-medium mb-1">Przekaż do osoby:</label>
+      <input
+        type="text"
+        class="w-full p-2 border border-gray-300 rounded"
+        [(ngModel)]="personToForward"
+        (input)="applyFilters()"
+      />
+    </div>
+    <div>
+      <label class="block text-sm font-medium mb-1">Data wystawienia:</label>
+      <div class="flex gap-2">
+        <input
+          type="date"
+          class="p-2 border border-gray-300 rounded"
+          [(ngModel)]="startDate"
+          (change)="applyFilters()"
+        />
+        <input
+          type="date"
+          class="p-2 border border-gray-300 rounded"
+          [(ngModel)]="endDate"
+          (change)="applyFilters()"
+        />
+      </div>
+    </div>
+  </div>
+  <div class="mb-6 flex justify-end">
+    <input
+      type="text"
+      placeholder="Filtr"
+      class="p-2 border border-gray-300 rounded mr-2"
+      [(ngModel)]="filterText"
+      (input)="applyFilters()"
+    />
+    <button
+      class="bg-teal-500 text-white px-4 py-2 rounded hover:bg-teal-600"
+      (click)="resetFilters()"
+    >
+      Resetuj filtry
+    </button>
+  </div>
+
+  <!-- Tabela -->
+  <div class="overflow-x-auto">
+    <table class="min-w-full border border-gray-200 bg-white">
+      <thead>
+      <tr class="bg-gray-100">
+        <th class="px-4 py-2 text-left border-b">Nr faktury</th>
+        <th class="px-4 py-2 text-center border-b">Termin</th>
+        <th class="px-4 py-2 text-center border-b">Osoba odpowiedzialna</th>
+        <th class="px-4 py-2 text-center border-b">Akcje</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr
+        *ngFor="let invoice of filteredInvoices"
+        class="hover:bg-gray-100"
+        (click)="toggleRow(invoice)"
+      >
+        <td class="px-4 py-2 border-b">{{ invoice.invoiceNumber }}</td>
+        <td class="px-4 py-2 text-center border-b">{{ invoice.issueDate | date }}</td>
+        <td class="px-4 py-2 border-b">{{ invoice.responsiblePerson }}</td>
+        <td class="px-4 py-2 text-center border-b">
+            <span
+              class="px-2 py-1 rounded"
+              [ngClass]="{
+                'bg-green-200 text-green-800': invoice.status === InvoiceStatusDto.Sent,
+                'bg-red-200 text-red-800': invoice.status === InvoiceStatusDto.Printed,
+                'bg-yellow-200 text-yellow-800': invoice.status === InvoiceStatusDto.Draft
+              }"
+            >
+              {{ getInvoiceStatusName(invoice.status) }}
+            </span>
+        </td>
+        <td class="px-4 py-2 text-center border-b">
+          <button
+            class="text-blue-500 hover:underline"
+            (click)="forwardAction(invoice); $event.stopPropagation()"
+          >
+            Operacje
+          </button>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Twoje uwagi -->
+  <div class="mt-6">
+    <label for="remarks" class="block text-lg font-semibold mb-2">Twoje uwagi</label>
+    <textarea
+      id="remarks"
+      rows="4"
+      class="w-full p-3 border border-gray-300 rounded"
+      [(ngModel)]="expandedElement"
+    ></textarea>
+  </div>
+
+  <!-- Przyciski Akceptuję, Odrzucam, Przekazuję -->
+  <div class="mt-4 flex justify-center space-x-4">
+    <button
+      class="px-6 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600"
+      (click)="acceptAction(expandedElement!)"
+      [disabled]="!expandedElement"
+    >
+      Akceptuję
+    </button>
+    <button
+      class="px-6 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600"
+      (click)="rejectAction(expandedElement!)"
+      [disabled]="!expandedElement"
+    >
+      Odrzucam
+    </button>
+    <button
+      class="px-6 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600"
+      (click)="forwardAction(expandedElement!)"
+      [disabled]="!expandedElement"
+    >
+      Przekazuję
+    </button>
+  </div>
+</div>

@@ -1,0 +1,83 @@
+.invoice-card {
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  padding: 8px;
+  margin: 8px 0;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: box-shadow 0.3s ease, transform 0.3s ease;
+  overflow: hidden;
+}
+
+.invoice-card:hover {
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); /* Enhanced shadow */
+  transform: translateY(-3px); /* Slightly lift the card */
+}
+
+.invoice-card h2 {
+  margin-top: 0;
+  color: #333;
+}
+
+.invoice-card p {
+  margin: 8px 0;
+}
+
+.pending {
+  color: #d0a810;
+}
+
+.rejected {
+  color: #bb1010;
+}
+
+.approved {
+  color: #005d00;
+}
+
+.paid {
+  color: #187a93;
+}
+
+.pending-card {
+  background-color: #fffbda;
+}
+
+.rejected-card {
+  background-color: #f8d7da;
+}
+
+.approved-card {
+  background-color: #d4edda;
+}
+
+.paid-card {
+  background-color: #d1ecf1;
+}
+
+.mat-elevation-z8 {
+  margin: 20px;
+}
+
+.mat-header-cell, .mat-cell {
+  padding: 8px;
+}
+
+.pending {
+  color: orange;
+}
+
+.rejected {
+  color: red;
+}
+
+.approved {
+  color: green;
+}
+
+.paid {
+  color: blue;
+}
+
+.clickable-row {
+  cursor: pointer;
+}

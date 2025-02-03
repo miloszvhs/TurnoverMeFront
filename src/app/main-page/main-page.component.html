@@ -1,0 +1,15 @@
+<div class="p-4 bg-white shadow-md rounded-lg mb-4" *ngFor="let invoice of invoices">
+  <h2 class="text-xl font-semibold mb-2">Invoice Number: {{ invoice.number }}</h2>
+  <p class="mb-2">Amount: {{ invoice.amount | currency }}</p>
+  <p>Status:
+    <span [ngClass]="{
+      'text-yellow-500': invoice.status === 'Pending',
+      'text-red-500': invoice.status === 'Rejected',
+      'text-green-500': invoice.status === 'Approved'
+    }">
+      <i *ngIf="invoice.status === 'Pending'" class="fas fa-hourglass-half" title="Pending"></i>
+      <i *ngIf="invoice.status === 'Rejected'" class="fas fa-times-circle" title="Rejected"></i>
+      <i *ngIf="invoice.status === 'Approved'" class="fas fa-check-circle" title="Approved"></i>
+    </span>
+  </p>
+</div>
