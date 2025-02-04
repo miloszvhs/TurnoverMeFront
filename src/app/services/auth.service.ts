@@ -16,7 +16,7 @@ export class AuthService {
   }
 
   login(credentials: LoginRequest) : Observable<LoginResponse> {
-    return this.httpClient.post<LoginResponse>(`${this.apiUrl}/login`, credentials)
+    return this.httpClient.post<LoginResponse>(`${this.apiUrl}/account/login`, credentials)
       .pipe(map(response => {
         localStorage.setItem('accessToken', response.accessToken);
         document.cookie = `refreshToken=${response.refreshToken}`;
@@ -27,7 +27,7 @@ export class AuthService {
   refreshToken() : Observable<LoginResponse> {
     const refreshToken = this.getRefreshTokenFromCookie();
 
-    return this.httpClient.post<LoginResponse>("http://localhost:5000/refresh", { refreshToken})
+    return this.httpClient.post<LoginResponse>(`${this.apiUrl}/account/refresh`, { refreshToken})
       .pipe(map(response => {
         localStorage.setItem('accessToken', response.accessToken);
         document.cookie = `refreshToken=${response.refreshToken};`;
