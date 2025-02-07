@@ -2,7 +2,7 @@ import {Inject, Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {LoginRequest} from '../models/login-request';
 import {LoginResponse} from '../models/login-response';
-import {map, Observable} from 'rxjs';
+import {catchError, map, Observable, throwError} from 'rxjs';
 import {API} from '../api-url.token';
 
 @Injectable({
@@ -15,13 +15,19 @@ export class AuthService {
     this.apiUrl = `${apiUrl}`;
   }
 
-  login(credentials: LoginRequest) : Observable<LoginResponse> {
+  login(credentials: LoginRequest): Observable<LoginResponse> {
     return this.httpClient.post<LoginResponse>(`${this.apiUrl}/account/login`, credentials)
-      .pipe(map(response => {
-        localStorage.setItem('accessToken', response.accessToken);
-        document.cookie = `refreshToken=${response.refreshToken}`;
-        return response;
-      }));
+      .pipe(
+        map(response => {
+          localStorage.setItem('accessToken', response.accessToken);
+          document.cookie = `refreshToken=${response.refreshToken}`;
+          return response;
+        }),
+        catchError(error => {
+          localStorage.removeItem('accessToken');
+          return throwError(() => error);
+        })
+      );
   }
 
   refreshToken() : Observable<LoginResponse> {
@@ -56,5 +62,16 @@ export class AuthService {
 
   isLoggedIn() : boolean {
     return localStorage.getItem('accessToken') !== null;
+  }
+
+  getToken() {
+    return localStorage.getItem("accessToken");
+  }
+
+  getClaims(){
+    let payload = this.getToken();
+    let decoded = atob(<string>payload);
+    let token = JSON.parse(decoded);
+    return token;
   }
 }

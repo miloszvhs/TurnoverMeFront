@@ -4,6 +4,7 @@ import {map, Observable} from 'rxjs';
 import {InvoiceStatusDto} from '../../Dtos/Enums/invoice-status-dto';
 import {API} from '../../api-url.token';
 import {InvoiceDto} from '../../Dtos/Invoice-dto';
+import {InvoiceDTO} from '../../Dtos/invoicedto';
 
 @Injectable({
   providedIn: 'root'
@@ -25,10 +26,8 @@ export class InvoiceService {
     return this.http.get<InvoiceDto>(`${this.apiUrl}/${id}`);
   }
 
-  getInvoices(): Observable<InvoiceDto[]> {
-    return this.http.get<string[]>(`${this.apiUrl}`).pipe(
-      map(data => data.map(item => this.mapToInvoiceDto(item)))
-    );
+  getInvoices(): Observable<InvoiceDTO[]> {
+    return this.http.get<InvoiceDTO[]>(`${this.apiUrl}/invoices/invoices`);
   }
 
   private mapToInvoiceDto(data: any): InvoiceDto {

@@ -1,0 +1,124 @@
+<div class="p-4 bg-gray-100 min-h-screen">
+  <!-- Header Section -->
+  <div class="bg-white shadow-md p-4 mb-4">
+    <h2 class="text-lg font-semibold">Invoice</h2>
+  </div>
+
+  <!-- Form Section -->
+  <div class="bg-white shadow-md p-4 mb-4 grid grid-cols-2 gap-4">
+    <div>
+      <label class="block text-sm font-medium text-gray-700">Record Number</label>
+      <input type="text" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm" />
+    </div>
+    <div>
+      <label class="block text-sm font-medium text-gray-700">Document Type</label>
+      <input type="text" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm" />
+    </div>
+    <div>
+      <label class="block text-sm font-medium text-gray-700">Contractor</label>
+      <input type="text"  class="mt-1 block w-full rounded-md border-gray-300 shadow-sm" />
+    </div>
+    <div>
+      <label class="block text-sm font-medium text-gray-700">Supplier</label>
+      <input type="text" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm" />
+    </div>
+    <div>
+      <label class="block text-sm font-medium text-gray-700">Issue Date</label>
+      <input type="date" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm" />
+    </div>
+    <div>
+      <label class="block text-sm font-medium text-gray-700">Currency</label>
+      <select class="mt-1 block w-full rounded-md border-gray-300 shadow-sm">
+        <option>PLN</option>
+        <option>EUR</option>
+      </select>
+    </div>
+    <div class="p-4 mb-4 grid grid-cols-3 gap-4">
+      <div>
+        <label class="block text-sm font-medium text-gray-700">Net amount</label>
+        <input type="number" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm" />
+      </div>
+      <div>
+        <label class="block text-sm font-medium text-gray-700">Tax amount</label>
+        <input type="number" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm" />
+      </div>
+      <div>
+        <label class="block text-sm font-medium text-gray-700">Gross amount</label>
+        <input type="number" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm" />
+      </div>
+    </div>
+  </div>
+
+  <div class="bg-white shadow-md p-4">
+    <table class="w-full border border-gray-200">
+      <thead>
+      <tr class="bg-gray-200">
+        <th class="border p-2"></th> <!-- Strzałka -->
+        <th class="border p-2">Invoice Number</th>
+        <th class="border p-2">Net Amount</th>
+        <th class="border p-2">VAT Amount</th>
+        <th class="border p-2">Gross Amount</th>
+        <th class="border p-2">Status</th>
+        <th class="border p-2">Creation Time</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let invoice of invoices">
+        <td class="border p-2 text-center cursor-pointer" (click)="openModal(invoice)">
+          <span>➤</span>
+        </td>
+        <td class="border p-2">{{ invoice.invoiceNumber }}</td>
+        <td class="border p-2">{{ invoice.totalNetAmount }}</td>
+        <td class="border p-2">{{ invoice.totalTaxAmount }}</td>
+        <td class="border p-2">{{ invoice.totalGrossAmount }}</td>
+        <td class="border p-2">status</td>
+        <td class="border p-2">{{ invoice.issueDate | date:'short' }}</td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Modal (okienko) -->
+  <div *ngIf="selectedInvoice" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
+    <div class="bg-white p-6 rounded-lg shadow-lg w-1/3">
+      <h3 class="text-xl font-semibold mb-4">Invoice Details</h3>
+
+      <label class="block mb-2">Path:</label>
+      <select class="border p-2 w-full mb-3" [(ngModel)]="selectedPath">
+        <option *ngFor="let path of invoicePaths[selectedInvoice.invoiceNumber]" [value]="path.id">
+          {{ path.name }}
+        </option>
+      </select>
+
+      <!-- Recipient Type Toggle -->
+      <div class="mb-3">
+        <label class="mr-4">
+          <input type="radio" [(ngModel)]="selectedRecipientType" value="group" /> Group
+        </label>
+        <label>
+          <input type="radio" [(ngModel)]="selectedRecipientType" value="user" /> User
+        </label>
+      </div>
+
+      <!-- Recipient Selection -->
+      <label class="block mb-2">Recipient:</label>
+      <select class="border p-2 w-full mb-3" [(ngModel)]="selectedRecipient">
+        <ng-container *ngIf="selectedRecipientType === 'group'">
+          <option *ngFor="let group of recipients.groups" [value]="group.id">
+            {{ group.name }}
+          </option>
+        </ng-container>
+        <ng-container *ngIf="selectedRecipientType === 'user'">
+          <option *ngFor="let user of recipients.users" [value]="user.id">
+            {{ user.name }}
+          </option>
+        </ng-container>
+      </select>
+
+      <div class="flex justify-end gap-2 mt-4">
+        <button class="bg-gray-400 text-white px-4 py-2 rounded" (click)="closeModal()">Cancel</button>
+        <button class="bg-blue-500 text-white px-4 py-2 rounded" (click)="saveInvoice()">Save Invoice</button>
+      </div>
+    </div>
+  </div>
+</div>

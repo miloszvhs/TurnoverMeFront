@@ -1,1 +1,61 @@
-<p>about works!</p>
+<div class="p-4 bg-gray-100 min-h-screen">
+  <!-- Header Section -->
+  <div class="bg-white shadow-md p-4 mb-4">
+    <h2 class="text-lg font-semibold">Faktura</h2>
+  </div>
+
+  <!-- Form Section -->
+  <div class="bg-white shadow-md p-4 mb-4 grid grid-cols-2 gap-4">
+    <div>
+      <label class="block text-sm font-medium text-gray-700">Nr ewidencyjny</label>
+      <input type="text" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm" />
+    </div>
+    <div>
+      <label class="block text-sm font-medium text-gray-700">Rodzaj dokumentu</label>
+      <input type="text" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm" />
+    </div>
+    <div>
+      <label class="block text-sm font-medium text-gray-700">Kontrahent</label>
+      <input type="text" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm" />
+    </div>
+    <div>
+      <label class="block text-sm font-medium text-gray-700">Dostawca</label>
+      <input type="text" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm" />
+    </div>
+    <div>
+      <label class="block text-sm font-medium text-gray-700">Data wystawienia</label>
+      <input type="date" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm" />
+    </div>
+    <div>
+      <label class="block text-sm font-medium text-gray-700">Waluta</label>
+      <select class="mt-1 block w-full rounded-md border-gray-300 shadow-sm">
+        <option>PLN</option>
+        <option>EUR</option>
+      </select>
+    </div>
+  </div>
+
+  <!-- Table Section -->
+  <div class="bg-white shadow-md p-4">
+    <table class="w-full border border-gray-200">
+      <thead>
+      <tr class="bg-gray-200">
+        <th class="border p-2">Rodz. VAT</th>
+        <th class="border p-2">Stawka VAT</th>
+        <th class="border p-2">Netto</th>
+        <th class="border p-2">Podatek VAT</th>
+        <th class="border p-2">Brutto</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr>
+        <td class="border p-2">23</td>
+        <td class="border p-2">23%</td>
+        <td class="border p-2">1 000,00</td>
+        <td class="border p-2">230,00</td>
+        <td class="border p-2">1 230,00</td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

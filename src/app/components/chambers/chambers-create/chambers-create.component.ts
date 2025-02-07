@@ -1,24 +1,48 @@
 import { Component } from '@angular/core';
-import {AbstractControl, FormArray, FormBuilder, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
-import {NgForOf, NgIf} from '@angular/common';
-import {InvoiceApiService} from '../../services/invoice/invoice-api.service';
+import {NgForOf, NgIf} from "@angular/common";
+import {AbstractControl, FormArray, FormBuilder, FormGroup, ReactiveFormsModule, Validators} from "@angular/forms";
+import {InvoiceApiService} from '../../../services/invoice/invoice-api.service';
+import {InvoiceDto} from '../../../Dtos/Invoice-dto';
+import {InvoiceDTO} from '../../../Dtos/invoicedto';
+import {Router} from '@angular/router';
 
 @Component({
-  selector: 'app-invoice-create',
-  imports: [
-    ReactiveFormsModule,
-    NgForOf,
-    NgIf
-  ],
-  templateUrl: './invoice-create.component.html',
-  styleUrl: './invoice-create.component.css'
+  selector: 'app-chambers-create',
+    imports: [
+        NgForOf,
+        NgIf,
+        ReactiveFormsModule
+    ],
+  templateUrl: './chambers-create.component.html',
+  styleUrl: './chambers-create.component.css'
 })
-export class InvoiceCreateComponent {
+export class ChambersCreateComponent {
   public invoiceForm: FormGroup = new FormGroup({});
   private invoiceApiService: InvoiceApiService;
+  protected errorMessage: any;
+  protected successMessage: any;
 
-  constructor(private fb: FormBuilder, invoiceApiService: InvoiceApiService) {
+  constructor(private fb: FormBuilder, invoiceApiService: InvoiceApiService, private router: Router) {
     this.invoiceApiService = invoiceApiService;
+  }
+
+  toInvoiceDTO(): InvoiceDTO {
+    const formValue = this.invoiceForm.value;
+    return {
+      invoiceNumber: formValue.invoiceNumber,
+      issueDate: formValue.issueDate,
+      seller: formValue.seller,
+      buyer: formValue.buyer,
+      hasReceiver: formValue.hasReceiver,
+      receiver: formValue.hasReceiver ? formValue.receiver : undefined,
+      deliveryDate: formValue.deliveryDate,
+      items: formValue.items,
+      totalNetAmount: formValue.totalNetAmount,
+      totalTaxAmount: formValue.totalTaxAmount,
+      totalGrossAmount: formValue.totalGrossAmount,
+      currency: formValue.currency,
+      remarks: formValue.remarks
+    };
   }
 
   ngOnInit(): void {
@@ -152,14 +176,29 @@ export class InvoiceCreateComponent {
   }
 
   onSubmit(): void {
+    this.invoiceForm.markAllAsTouched();
+
+    if (this.invoiceForm.invalid) {
+      this.errorMessage = 'Please complete all required fields correctly';
+      this.successMessage = '';
+      return;
+    }
+
+    this.errorMessage = '';
+    this.successMessage = '';
+
     if (this.invoiceForm?.valid) {
       console.log('Invoice data:', this.invoiceForm.value);
-      this.invoiceApiService.postInvoice(this.invoiceForm)
-        .subscribe(result => {
-          if(result.status) {
-            console.log(result.message);
-          } else {
-            console.error(result.message, result.error);
+      this.invoiceApiService.postInvoice(this.toInvoiceDTO())
+        .subscribe({
+          next: (response) => {
+            this.successMessage = 'Invoice saved!';
+            setTimeout(() => {
+              this.router.navigate(['/chambers-index']);
+            }, 1500);
+          },
+          error: (err) => {
+            this.errorMessage = err.error?.message || 'Internal server error. Try again.';
           }
         });
     } else {
@@ -167,3 +206,5 @@ export class InvoiceCreateComponent {
     }
   }
 }
+
+

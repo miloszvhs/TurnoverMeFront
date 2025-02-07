@@ -1,9 +1,11 @@
 import {Component, OnInit} from '@angular/core';
 import {AuthService} from '../../services/auth.service';
 import {LoginRequest} from '../../models/login-request';
-import {RouterLink, RouterLinkActive, RouterOutlet} from '@angular/router';
+import {Router, RouterLink, RouterLinkActive, RouterOutlet} from '@angular/router';
 import {NgIf} from '@angular/common';
 import {FormsModule} from '@angular/forms';
+import {HttpErrorResponse} from '@angular/common/http';
+import {LoginResponse} from '../../models/login-response';
 
 @Component({
   selector: 'app-login',
@@ -19,7 +21,8 @@ import {FormsModule} from '@angular/forms';
 })
 export class LoginComponent implements OnInit {
 
-  constructor(private authService: AuthService) {}
+  protected errorMessage: any;
+  constructor(private authService: AuthService, private router: Router) {}
 
   isMobileMenuOpen = false;
 
@@ -27,7 +30,6 @@ export class LoginComponent implements OnInit {
     email: '',
     password: ''
   };
-
 
   toggleMobileMenu() {
     this.isMobileMenuOpen = !this.isMobileMenuOpen;
@@ -39,8 +41,13 @@ export class LoginComponent implements OnInit {
   }
 
   login() {
-    this.authService.login(this.credentials).subscribe(() =>{
-      console.log('User is logged in');
+    this.authService.login(this.credentials).subscribe({
+      next: (response) => {
+        this.router.navigate(['']);
+      },
+      error: (err) => {
+        this.errorMessage = 'Invalid data';
+      }
     });
   }
 
@@ -49,6 +56,7 @@ export class LoginComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.isLoggedIn();
+    if(!this.isLoggedIn())
+      this.errorMessage = null;
   }
 }
