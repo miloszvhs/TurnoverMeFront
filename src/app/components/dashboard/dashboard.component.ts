@@ -1,9 +1,9 @@
 import {Component, OnInit} from '@angular/core';
-import {BaseChartDirective} from 'ng2-charts';
 import {DatePipe, NgForOf} from '@angular/common';
 import {ChartConfiguration, ChartData, ChartOptions} from 'chart.js';
 import {InvoiceApiService} from '../../services/invoice/invoice-api.service';
 import {InvoiceDTO} from '../../Dtos/invoicedto';
+import { BaseChartDirective } from 'ng2-charts';
 
 @Component({
   selector: 'app-dashboard',
@@ -105,7 +105,7 @@ export class DashboardComponent implements OnInit {
   public pieChartData: ChartData<'pie', number[], string | string[]> = {
     labels: this.pieChartLabels,
     datasets: [{
-      data: [, 500, 100],
+      data: [100, 500, 100],
       backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56'],
       hoverBackgroundColor: ['#FF6384', '#36A2EB', '#FFCE56']
     }]
