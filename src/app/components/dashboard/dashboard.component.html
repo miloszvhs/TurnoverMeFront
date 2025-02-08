@@ -6,15 +6,13 @@
         <th class="py-2 px-4 border">Numer faktury</th>
         <th class="py-2 px-4 border">Data</th>
         <th class="py-2 px-4 border">Kwota</th>
-        <th class="py-2 px-4 border">Status</th>
       </tr>
       </thead>
       <tbody>
       <tr *ngFor="let invoice of invoices">
-        <td class="py-2 px-4 border">{{ invoice.number }}</td>
-        <td class="py-2 px-4 border">{{ invoice.date | date }}</td>
-        <td class="py-2 px-4 border">{{ invoice.amount }}</td>
-        <td class="py-2 px-4 border">{{ invoice.status }}</td>
+        <td class="py-2 px-4 border">{{ invoice.invoiceNumber }}</td>
+        <td class="py-2 px-4 border">{{ invoice.issueDate | date }}</td>
+        <td class="py-2 px-4 border">{{ invoice.totalGrossAmount }}</td>
       </tr>
       </tbody>
     </table>

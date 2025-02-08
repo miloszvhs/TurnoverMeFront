@@ -2,6 +2,8 @@ import {Component, OnInit} from '@angular/core';
 import {BaseChartDirective} from 'ng2-charts';
 import {DatePipe, NgForOf} from '@angular/common';
 import {ChartConfiguration, ChartData, ChartOptions} from 'chart.js';
+import {InvoiceApiService} from '../../services/invoice/invoice-api.service';
+import {InvoiceDTO} from '../../Dtos/invoicedto';
 
 @Component({
   selector: 'app-dashboard',
@@ -14,11 +16,10 @@ import {ChartConfiguration, ChartData, ChartOptions} from 'chart.js';
   styleUrl: './dashboard.component.css'
 })
 export class DashboardComponent implements OnInit {
-  invoices = [
-    { number: 'FV/001/2025', date: new Date(), amount: 1500, status: 'Opłacona' },
-    { number: 'FV/002/2025', date: new Date(), amount: 2300, status: 'Nieopłacona' },
-    // Dodaj kolejne przykładowe faktury
-  ];
+  protected invoices: InvoiceDTO[] = [];
+
+  constructor(private invoiceApiService: InvoiceApiService) {
+  }
 
   public dailyLabels: string[] = ['Pon', 'Wt', 'Śr', 'Czw', 'Pt', 'Sob', 'Nd'];
   public dailyChartData: ChartConfiguration<'bar'>['data'] = {
@@ -104,7 +105,7 @@ export class DashboardComponent implements OnInit {
   public pieChartData: ChartData<'pie', number[], string | string[]> = {
     labels: this.pieChartLabels,
     datasets: [{
-      data: [300, 500, 100],
+      data: [, 500, 100],
       backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56'],
       hoverBackgroundColor: ['#FF6384', '#36A2EB', '#FFCE56']
     }]
@@ -112,8 +113,9 @@ export class DashboardComponent implements OnInit {
   public pieChartLegend = true;
   public pieChartPlugins = [];
 
-  constructor() { }
-
   ngOnInit(): void {
+    this.invoiceApiService.GetInvoicesForUser().subscribe((data) => {
+      this.invoices = data;
+    });
   }
 }

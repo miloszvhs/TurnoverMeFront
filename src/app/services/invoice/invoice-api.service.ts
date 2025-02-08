@@ -39,4 +39,8 @@ export class InvoiceApiService {
       })
     );
   }
+
+  GetInvoicesForUser(): Observable<InvoiceDTO[]> {
+    return this.http.get<InvoiceDTO[]>(`${this.apiUrl}/invoices//user`);
+  }
 }
