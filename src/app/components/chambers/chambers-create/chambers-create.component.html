@@ -1,266 +1,347 @@
-<form [formGroup]="invoiceForm" (ngSubmit)="onSubmit()" class="max-w-4xl mx-auto p-6 bg-white shadow-md rounded grid md:grid-cols-2 gap-4">
-  <div class="mb-4">
-    <label class="block text-gray-700 font-semibold mb-1">Invoice Number:</label>
-    <input formControlName="invoiceNumber" type="text" class="w-full border rounded p-2 focus:outline-none focus:ring-2 focus:ring-blue-400" />
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
+  <div>
+    <form [formGroup]="invoiceForm" (ngSubmit)="onSubmit()"
+      class="max-w-4xl mx-auto p-6 bg-white shadow-md rounded grid md:grid-cols-2 gap-4">
+      <div class="mb-4">
+        <label class="block text-gray-700 font-semibold mb-1">Invoice Number:</label>
+        <input formControlName="invoiceNumber" type="text"
+          class="w-full border rounded p-2 focus:outline-none focus:ring-2 focus:ring-blue-400" />
+      </div>
+
+      <div class="mb-4">
+        <label class="block text-gray-700 font-semibold mb-1">Issue Date:</label>
+        <input formControlName="issueDate" type="date"
+          class="w-full border rounded p-2 focus:outline-none focus:ring-2 focus:ring-blue-400" />
+      </div>
+
+      <input formControlName="fileAsBase64" type="hidden" />
+
+      <fieldset formGroupName="seller"
+        class="mb-6 border border-gray-300 p-4 rounded bg-sky-100 col-span-2 md:col-span-1">
+        <legend class="text-lg font-bold text-gray-800">Seller</legend>
+        <div class="mb-4">
+          <label class="block text-gray-700 mb-1">Name:</label>
+          <input formControlName="name" type="text"
+            class="w-full border rounded p-2 focus:outline-none focus:ring-2 focus:ring-blue-400" />
+        </div>
+        <fieldset formGroupName="address" class="mb-4 border border-gray-200 p-4 rounded bg-white">
+          <legend class="text-md font-semibold text-gray-700">Address</legend>
+          <div class="mb-4">
+            <label class="block text-gray-600 mb-1">Street:</label>
+            <input formControlName="street" type="text"
+              class="w-full border rounded p-2 focus:outline-none focus:ring-2 focus:ring-blue-400" />
+          </div>
+          <div class="mb-4 grid grid-cols-2 gap-4">
+            <div>
+              <label class="block text-gray-600 mb-1">Street Number:</label>
+              <input formControlName="streetNumber" type="text"
+                class="w-full border rounded p-2 focus:outline-none focus:ring-2 focus:ring-blue-400" />
+            </div>
+            <div>
+              <label class="block text-gray-600 mb-1">Flat Number:</label>
+              <input formControlName="flatNumber" type="text"
+                class="w-full border rounded p-2 focus:outline-none focus:ring-2 focus:ring-blue-400" />
+            </div>
+          </div>
+          <div class="mb-4 grid grid-cols-2 gap-4">
+            <div>
+              <label class="block text-gray-600 mb-1">City:</label>
+              <input formControlName="city" type="text"
+                class="w-full border rounded p-2 focus:outline-none focus:ring-2 focus:ring-blue-400" />
+            </div>
+            <div>
+              <label class="block text-gray-600 mb-1">Post Code:</label>
+              <input formControlName="postCode" type="text"
+                class="w-full border rounded p-2 focus:outline-none focus:ring-2 focus:ring-blue-400" />
+            </div>
+          </div>
+          <div class="mb-4">
+            <label class="block text-gray-600 mb-1">Country:</label>
+            <input formControlName="country" type="text"
+              class="w-full border rounded p-2 focus:outline-none focus:ring-2 focus:ring-blue-400" />
+          </div>
+        </fieldset>
+        <fieldset formGroupName="taxNumber"
+          class="mb-4 border border-gray-200 p-4 rounded grid grid-cols-2 gap-4 bg-white">
+          <div class="mb-4 grow">
+            <label class="block text-gray-700 mb-1">Tax Prefix:</label>
+            <input formControlName="taxPrefix" type="text"
+              class="w-full border rounded p-2 focus:outline-none focus:ring-2 focus:ring-blue-400" />
+          </div>
+          <div class="mb-4 grow">
+            <label class="block text-gray-700 mb-1">Tax Number:</label>
+            <input formControlName="taxNumber" type="text"
+              class="w-full border rounded p-2 focus:outline-none focus:ring-2 focus:ring-blue-400" />
+          </div>
+        </fieldset>
+      </fieldset>
+
+      <fieldset formGroupName="buyer"
+        class="mb-6 border border-gray-300 p-4 rounded bg-sky-100 col-span-2 md:col-span-1">
+        <legend class="text-lg font-bold text-gray-800">Buyer</legend>
+        <div class="mb-4">
+          <label class="block text-gray-700 mb-1">Name:</label>
+          <input formControlName="name" type="text"
+            class="w-full border rounded p-2 focus:outline-none focus:ring-2 focus:ring-blue-400" />
+        </div>
+        <fieldset formGroupName="address" class="mb-4 border border-gray-200 p-4 rounded bg-white">
+          <legend class="text-md font-semibold text-gray-700">Address</legend>
+          <div class="mb-4">
+            <label class="block text-gray-600 mb-1">Street:</label>
+            <input formControlName="street" type="text"
+              class="w-full border rounded p-2 focus:outline-none focus:ring-2 focus:ring-blue-400" />
+          </div>
+          <div class="mb-4 grid grid-cols-2 gap-4">
+            <div>
+              <label class="block text-gray-600 mb-1">Street Number:</label>
+              <input formControlName="streetNumber" type="text"
+                class="w-full border rounded p-2 focus:outline-none focus:ring-2 focus:ring-blue-400" />
+            </div>
+            <div>
+              <label class="block text-gray-600 mb-1">Flat Number:</label>
+              <input formControlName="flatNumber" type="text"
+                class="w-full border rounded p-2 focus:outline-none focus:ring-2 focus:ring-blue-400" />
+            </div>
+          </div>
+          <div class="mb-4 grid grid-cols-2 gap-4">
+            <div>
+              <label class="block text-gray-600 mb-1">City:</label>
+              <input formControlName="city" type="text"
+                class="w-full border rounded p-2 focus:outline-none focus:ring-2 focus:ring-blue-400" />
+            </div>
+            <div>
+              <label class="block text-gray-600 mb-1">Post Code:</label>
+              <input formControlName="postCode" type="text"
+                class="w-full border rounded p-2 focus:outline-none focus:ring-2 focus:ring-blue-400" />
+            </div>
+          </div>
+          <div class="mb-4">
+            <label class="block text-gray-600 mb-1">Country:</label>
+            <input formControlName="country" type="text"
+              class="w-full border rounded p-2 focus:outline-none focus:ring-2 focus:ring-blue-400" />
+          </div>
+        </fieldset>
+        <fieldset formGroupName="taxNumber"
+          class="mb-4 border border-gray-200 p-4 rounded grid grid-cols-2 gap-4 bg-white">
+          <div class="mb-4 grow">
+            <label class="block text-gray-700 mb-1">Tax Prefix:</label>
+            <input formControlName="taxPrefix" type="text"
+              class="w-full border rounded p-2 focus:outline-none focus:ring-2 focus:ring-blue-400" />
+          </div>
+          <div class="mb-4 grow">
+            <label class="block text-gray-700 mb-1">Tax Number:</label>
+            <input formControlName="taxNumber" type="text"
+              class="w-full border rounded p-2 focus:outline-none focus:ring-2 focus:ring-blue-400" />
+          </div>
+        </fieldset>
+      </fieldset>
+
+      <div class="mb-6 col-span-2">
+        <label class="inline-flex items-center">
+          <input type="checkbox" formControlName="hasReceiver" class="form-checkbox h-5 w-5 text-blue-600" />
+          <span class="ml-2 text-gray-700">Add Receiver Data</span>
+        </label>
+      </div>
+
+      <fieldset *ngIf="invoiceForm.get('hasReceiver')?.value" formGroupName="receiver"
+        class="mb-6 border border-gray-300 p-4 rounded rounded bg-emerald-100 col-span-2">
+        <legend class="text-lg font-bold text-gray-800">Odbiorca</legend>
+        <div class="mb-4">
+          <label class="block text-gray-700 mb-1">Nazwa:</label>
+          <input formControlName="name" type="text"
+            class="w-full border rounded p-2 focus:outline-none focus:ring-2 focus:ring-blue-400" />
+        </div>
+        <fieldset formGroupName="address" class="mb-4 border border-gray-200 p-4 rounded bg-white">
+          <legend class="text-md font-semibold text-gray-700">Adres</legend>
+          <div class="mb-4">
+            <label class="block text-gray-600 mb-1">Ulica:</label>
+            <input formControlName="street" type="text"
+              class="w-full border rounded p-2 focus:outline-none focus:ring-2 focus:ring-blue-400" />
+          </div>
+          <div class="mb-4 grid grid-cols-2 gap-4">
+            <div>
+              <label class="block text-gray-600 mb-1">Number ulicy:</label>
+              <input formControlName="streetNumber" type="text"
+                class="w-full border rounded p-2 focus:outline-none focus:ring-2 focus:ring-blue-400" />
+            </div>
+            <div>
+              <label class="block text-gray-600 mb-1">Numer mieszkania:</label>
+              <input formControlName="flatNumber" type="text"
+                class="w-full border rounded p-2 focus:outline-none focus:ring-2 focus:ring-blue-400" />
+            </div>
+          </div>
+          <div class="mb-4 grid grid-cols-2 gap-4">
+            <div>
+              <label class="block text-gray-600 mb-1">Miasto:</label>
+              <input formControlName="city" type="text"
+                class="w-full border rounded p-2 focus:outline-none focus:ring-2 focus:ring-blue-400" />
+            </div>
+            <div>
+              <label class="block text-gray-600 mb-1">Kod pocztowy:</label>
+              <input formControlName="postCode" type="text"
+                class="w-full border rounded p-2 focus:outline-none focus:ring-2 focus:ring-blue-400" />
+            </div>
+          </div>
+          <div class="mb-4">
+            <label class="block text-gray-600 mb-1">Kraj:</label>
+            <input formControlName="country" type="text"
+              class="w-full border rounded p-2 focus:outline-none focus:ring-2 focus:ring-blue-400" />
+          </div>
+        </fieldset>
+        <fieldset formGroupName="taxNumber"
+          class="mb-4 border border-gray-200 p-4 rounded grid grid-cols-2 gap-4 bg-white">
+          <div class="mb-4 grow">
+            <label class="block text-gray-700 mb-1">Prefiks NIP:</label>
+            <input formControlName="taxPrefix" type="text"
+              class="w-full border rounded p-2 focus:outline-none focus:ring-2 focus:ring-blue-400" />
+          </div>
+          <div class="mb-4 grow">
+            <label class="block text-gray-700 mb-1">Number NIP</label>
+            <input formControlName="taxNumber" type="text"
+              class="w-full border rounded p-2 focus:outline-none focus:ring-2 focus:ring-blue-400" />
+          </div>
+        </fieldset>
+      </fieldset>
+
+      <div class="mb-4 col-span-2">
+        <label class="block text-gray-700 font-semibold mb-1">Delivery Date:</label>
+        <input formControlName="deliveryDate" type="date"
+          class="w-full border rounded p-2 focus:outline-none focus:ring-2 focus:ring-blue-400" />
+      </div>
+
+      <fieldset formArrayName="items" class="mb-6 border border-gray-300 p-4 rounded bg-slate-200 col-span-2">
+        <legend class="text-lg font-bold text-gray-800">Pozycje</legend>
+        <div *ngFor="let item of items.controls; let i = index" [formGroupName]="i"
+          class="mb-4 p-4 border rounded bg-white">
+          <div class="mb-4">
+            <label class="block text-gray-700 mb-1">Nazwa produktu:</label>
+            <input formControlName="name" type="text"
+              class="w-full border rounded p-2 focus:outline-none focus:ring-2 focus:ring-blue-400" />
+            <div *ngIf="item.get('name')?.invalid && item.get('name')?.touched" class="text-red-600 text-sm mt-1">
+              Nazwa produktu jest wymagana.
+            </div>
+          </div>
+          <div class="mb-4">
+            <label class="block text-gray-700 mb-1">Jednostka:</label>
+            <input formControlName="unit" type="text"
+              class="w-full border rounded p-2 focus:outline-none focus:ring-2 focus:ring-blue-400" />
+            <div *ngIf="item.get('unit')?.invalid && item.get('unit')?.touched" class="text-red-600 text-sm mt-1">
+              Jednostka jest wymagana.
+            </div>
+          </div>
+          <div class="mb-4 grid grid-cols-2 gap-4">
+            <div>
+              <label class="block text-gray-700 mb-1">Ilość:</label>
+              <input formControlName="quantity" type="number"
+                class="w-full border rounded p-2 focus:outline-none focus:ring-2 focus:ring-blue-400" />
+              <div *ngIf="
+                  item.get('quantity')?.invalid && item.get('quantity')?.touched
+                " class="text-red-600 text-sm mt-1">
+                Ilość jest wymagana.
+              </div>
+            </div>
+            <div>
+              <label class="block text-gray-700 mb-1">Wartość jednostkowa netto:</label>
+              <input formControlName="unitNetPrice" type="number" step="0.01"
+                class="w-full border rounded p-2 focus:outline-none focus:ring-2 focus:ring-blue-400" />
+              <div *ngIf="
+                  item.get('unitNetPrice')?.invalid &&
+                  item.get('unitNetPrice')?.touched
+                " class="text-red-600 text-sm mt-1">
+                Wartość jednostkowa netto jest wymagana.
+              </div>
+            </div>
+          </div>
+          <div class="mb-4">
+            <label class="block text-gray-700 mb-1">Zniżka:</label>
+            <input formControlName="discount" type="number" step="0.01"
+              class="w-full border rounded p-2 focus:outline-none focus:ring-2 focus:ring-blue-400" />
+          </div>
+          <div class="mb-4 grid grid-cols-3 gap-4">
+            <div>
+              <label class="block text-gray-700 mb-1">Wartość netto:</label>
+              <input formControlName="netValue" type="number" step="0.01" readonly
+                class="w-full border rounded p-2 bg-gray-100" />
+            </div>
+            <div>
+              <label class="block text-gray-700 mb-1">Stawka VAT (%):</label>
+              <input formControlName="taxRate" type="number" step="0.01"
+                class="w-full border rounded p-2 focus:outline-none focus:ring-2 focus:ring-blue-400" />
+            </div>
+            <div>
+              <label class="block text-gray-700 mb-1">Wartość VAT:</label>
+              <input formControlName="taxAmount" type="number" step="0.01" readonly
+                class="w-full border rounded p-2 bg-gray-100" />
+            </div>
+          </div>
+          <div class="mb-4">
+            <label class="block text-gray-700 mb-1">Wartość brutto:</label>
+            <input formControlName="grossValue" type="number" step="0.01" readonly
+              class="w-full border rounded p-2 bg-gray-100" />
+          </div>
+          <button type="button" (click)="removeItem(i)"
+            class="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600">
+            Usuń pozycję
+          </button>
+        </div>
+        <button type="button" (click)="addItem()"
+          class="mt-2 px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600">
+          Dodaj pozycję
+        </button>
+      </fieldset>
+
+      <div class="mb-4 grid grid-cols-3 gap-4 col-span-2">
+        <div>
+          <label class="block text-gray-700 mb-1">Wartość całkowita netto:</label>
+          <input formControlName="totalNetAmount" type="number" step="0.01" readonly
+            class="w-full border rounded p-2 bg-gray-100" />
+        </div>
+        <div>
+          <label class="block text-gray-700 mb-1">Wartość całkowita VAT:</label>
+          <input formControlName="totalTaxAmount" type="number" step="0.01" readonly
+            class="w-full border rounded p-2 bg-gray-100" />
+        </div>
+        <div>
+          <label class="block text-gray-700 mb-1">Wartość całkowita brutto:</label>
+          <input formControlName="totalGrossAmount" type="number" step="0.01" readonly
+            class="w-full border rounded p-2 bg-gray-100" />
+        </div>
+      </div>
+
+      <div class="mb-6 col-span-2">
+        <label class="block text-gray-700 mb-1">Waluta:</label>
+        <input formControlName="currency" type="text"
+          class="w-full border rounded p-2 focus:outline-none focus:ring-2 focus:ring-blue-400" />
+      </div>
+
+      <div class="mb-6 col-span-2">
+        <label class="block text-gray-700 mb-1">Uwagi:</label>
+        <textarea formControlName="remarks" rows="4"
+          class="w-full border rounded p-2 focus:outline-none focus:ring-2 focus:ring-blue-400"></textarea>
+      </div>
+
+      <button type="submit" class="w-full py-3 bg-blue-600 text-white rounded hover:bg-blue-700 col-span-2">
+        Zapisz fakturę
+      </button>
+      <div class="w-full col-span-2">
+        <div *ngIf="errorMessage" class="mb-4 p-4 bg-red-100 border border-red-400 text-red-700 rounded text-center">
+          {{ errorMessage }}
+        </div>
+        <div *ngIf="successMessage"
+          class="mb-4 p-4 bg-green-100 border border-green-400 text-green-700 rounded text-center">
+          {{ successMessage }}
+        </div>
+      </div>
+    </form>
   </div>
-
-  <div class="mb-4">
-    <label class="block text-gray-700 font-semibold mb-1">Issue Date:</label>
-    <input formControlName="issueDate" type="date" class="w-full border rounded p-2 focus:outline-none focus:ring-2 focus:ring-blue-400" />
-  </div>
-
-  <fieldset formGroupName="seller" class="mb-6 border border-gray-300 p-4 rounded bg-sky-100 col-span-2 md:col-span-1">
-    <legend class="text-lg font-bold text-gray-800">Seller</legend>
-    <div class="mb-4">
-      <label class="block text-gray-700 mb-1">Name:</label>
-      <input formControlName="name" type="text" class="w-full border rounded p-2 focus:outline-none focus:ring-2 focus:ring-blue-400" />
-    </div>
-    <fieldset formGroupName="address" class="mb-4 border border-gray-200 p-4 rounded bg-white">
-      <legend class="text-md font-semibold text-gray-700">Address</legend>
-      <div class="mb-4">
-        <label class="block text-gray-600 mb-1">Street:</label>
-        <input formControlName="street" type="text" class="w-full border rounded p-2 focus:outline-none focus:ring-2 focus:ring-blue-400" />
-      </div>
-      <div class="mb-4 grid grid-cols-2 gap-4">
-        <div>
-          <label class="block text-gray-600 mb-1">Street Number:</label>
-          <input formControlName="streetNumber" type="text" class="w-full border rounded p-2 focus:outline-none focus:ring-2 focus:ring-blue-400" />
-        </div>
-        <div>
-          <label class="block text-gray-600 mb-1">Flat Number:</label>
-          <input formControlName="flatNumber" type="text" class="w-full border rounded p-2 focus:outline-none focus:ring-2 focus:ring-blue-400" />
-        </div>
-      </div>
-      <div class="mb-4 grid grid-cols-2 gap-4">
-        <div>
-          <label class="block text-gray-600 mb-1">City:</label>
-          <input formControlName="city" type="text" class="w-full border rounded p-2 focus:outline-none focus:ring-2 focus:ring-blue-400" />
-        </div>
-        <div>
-          <label class="block text-gray-600 mb-1">Post Code:</label>
-          <input formControlName="postCode" type="text" class="w-full border rounded p-2 focus:outline-none focus:ring-2 focus:ring-blue-400" />
-        </div>
-      </div>
-      <div class="mb-4">
-        <label class="block text-gray-600 mb-1">Country:</label>
-        <input formControlName="country" type="text" class="w-full border rounded p-2 focus:outline-none focus:ring-2 focus:ring-blue-400" />
-      </div>
-    </fieldset>
-    <fieldset formGroupName="taxNumber" class="mb-4 border border-gray-200 p-4 rounded grid grid-cols-2 gap-4 bg-white">
-      <div class="mb-4 grow">
-        <label class="block text-gray-700 mb-1">Tax Prefix:</label>
-        <input formControlName="taxPrefix" type="text" class="w-full border rounded p-2 focus:outline-none focus:ring-2 focus:ring-blue-400" />
-      </div>
-      <div class="mb-4 grow">
-        <label class="block text-gray-700 mb-1">Tax Number:</label>
-        <input formControlName="taxNumber" type="text" class="w-full border rounded p-2 focus:outline-none focus:ring-2 focus:ring-blue-400" />
-      </div>
-    </fieldset>
-  </fieldset>
-
-  <fieldset formGroupName="buyer" class="mb-6 border border-gray-300 p-4 rounded bg-sky-100 col-span-2 md:col-span-1">
-    <legend class="text-lg font-bold text-gray-800">Buyer</legend>
-    <div class="mb-4">
-      <label class="block text-gray-700 mb-1">Name:</label>
-      <input formControlName="name" type="text" class="w-full border rounded p-2 focus:outline-none focus:ring-2 focus:ring-blue-400" />
-    </div>
-    <fieldset formGroupName="address" class="mb-4 border border-gray-200 p-4 rounded bg-white">
-      <legend class="text-md font-semibold text-gray-700">Address</legend>
-      <div class="mb-4">
-        <label class="block text-gray-600 mb-1">Street:</label>
-        <input formControlName="street" type="text" class="w-full border rounded p-2 focus:outline-none focus:ring-2 focus:ring-blue-400" />
-      </div>
-      <div class="mb-4 grid grid-cols-2 gap-4">
-        <div>
-          <label class="block text-gray-600 mb-1">Street Number:</label>
-          <input formControlName="streetNumber" type="text" class="w-full border rounded p-2 focus:outline-none focus:ring-2 focus:ring-blue-400" />
-        </div>
-        <div>
-          <label class="block text-gray-600 mb-1">Flat Number:</label>
-          <input formControlName="flatNumber" type="text" class="w-full border rounded p-2 focus:outline-none focus:ring-2 focus:ring-blue-400" />
-        </div>
-      </div>
-      <div class="mb-4 grid grid-cols-2 gap-4">
-        <div>
-          <label class="block text-gray-600 mb-1">City:</label>
-          <input formControlName="city" type="text" class="w-full border rounded p-2 focus:outline-none focus:ring-2 focus:ring-blue-400" />
-        </div>
-        <div>
-          <label class="block text-gray-600 mb-1">Post Code:</label>
-          <input formControlName="postCode" type="text" class="w-full border rounded p-2 focus:outline-none focus:ring-2 focus:ring-blue-400" />
-        </div>
-      </div>
-      <div class="mb-4">
-        <label class="block text-gray-600 mb-1">Country:</label>
-        <input formControlName="country" type="text" class="w-full border rounded p-2 focus:outline-none focus:ring-2 focus:ring-blue-400" />
-      </div>
-    </fieldset>
-    <fieldset formGroupName="taxNumber" class="mb-4 border border-gray-200 p-4 rounded grid grid-cols-2 gap-4 bg-white">
-      <div class="mb-4 grow">
-        <label class="block text-gray-700 mb-1">Tax Prefix:</label>
-        <input formControlName="taxPrefix" type="text" class="w-full border rounded p-2 focus:outline-none focus:ring-2 focus:ring-blue-400" />
-      </div>
-      <div class="mb-4 grow">
-        <label class="block text-gray-700 mb-1">Tax Number:</label>
-        <input formControlName="taxNumber" type="text" class="w-full border rounded p-2 focus:outline-none focus:ring-2 focus:ring-blue-400" />
-      </div>
-    </fieldset>
-  </fieldset>
-
-  <div class="mb-6 col-span-2">
-    <label class="inline-flex items-center">
-      <input type="checkbox" formControlName="hasReceiver" class="form-checkbox h-5 w-5 text-blue-600" />
-      <span class="ml-2 text-gray-700">Add Receiver Data</span>
+  <div class="flex flex-col items-center p-4 border rounded bg-gray-50">
+    <label for="imageUpload" class="block text-gray-700 font-semibold mb-2">
+      Wybierz zdjęcie
     </label>
-  </div>
+    <input id="imageUpload" type="file" accept="image/*" (change)="onFileSelected($event)" class="mb-4" />
 
-  <fieldset *ngIf="invoiceForm.get('hasReceiver')?.value" formGroupName="receiver" class="mb-6 border border-gray-300 p-4 rounded rounded bg-emerald-100 col-span-2">
-    <legend class="text-lg font-bold text-gray-800">Receiver</legend>
-    <div class="mb-4">
-      <label class="block text-gray-700 mb-1">Name:</label>
-      <input formControlName="name" type="text" class="w-full border rounded p-2 focus:outline-none focus:ring-2 focus:ring-blue-400" />
-    </div>
-    <fieldset formGroupName="address" class="mb-4 border border-gray-200 p-4 rounded bg-white">
-      <legend class="text-md font-semibold text-gray-700">Address</legend>
-      <div class="mb-4">
-        <label class="block text-gray-600 mb-1">Street:</label>
-        <input formControlName="street" type="text" class="w-full border rounded p-2 focus:outline-none focus:ring-2 focus:ring-blue-400" />
-      </div>
-      <div class="mb-4 grid grid-cols-2 gap-4">
-        <div>
-          <label class="block text-gray-600 mb-1">Street Number:</label>
-          <input formControlName="streetNumber" type="text" class="w-full border rounded p-2 focus:outline-none focus:ring-2 focus:ring-blue-400" />
-        </div>
-        <div>
-          <label class="block text-gray-600 mb-1">Flat Number:</label>
-          <input formControlName="flatNumber" type="text" class="w-full border rounded p-2 focus:outline-none focus:ring-2 focus:ring-blue-400" />
-        </div>
-      </div>
-      <div class="mb-4 grid grid-cols-2 gap-4">
-        <div>
-          <label class="block text-gray-600 mb-1">City:</label>
-          <input formControlName="city" type="text" class="w-full border rounded p-2 focus:outline-none focus:ring-2 focus:ring-blue-400" />
-        </div>
-        <div>
-          <label class="block text-gray-600 mb-1">Post Code:</label>
-          <input formControlName="postCode" type="text" class="w-full border rounded p-2 focus:outline-none focus:ring-2 focus:ring-blue-400" />
-        </div>
-      </div>
-      <div class="mb-4">
-        <label class="block text-gray-600 mb-1">Country:</label>
-        <input formControlName="country" type="text" class="w-full border rounded p-2 focus:outline-none focus:ring-2 focus:ring-blue-400" />
-      </div>
-    </fieldset>
-    <fieldset formGroupName="taxNumber" class="mb-4 border border-gray-200 p-4 rounded grid grid-cols-2 gap-4 bg-white">
-      <div class="mb-4 grow">
-        <label class="block text-gray-700 mb-1">Tax Prefix:</label>
-        <input formControlName="taxPrefix" type="text" class="w-full border rounded p-2 focus:outline-none focus:ring-2 focus:ring-blue-400" />
-      </div>
-      <div class="mb-4 grow">
-        <label class="block text-gray-700 mb-1">Tax Number:</label>
-        <input formControlName="taxNumber" type="text" class="w-full border rounded p-2 focus:outline-none focus:ring-2 focus:ring-blue-400" />
-      </div>
-    </fieldset>
-  </fieldset>
-
-  <div class="mb-4 col-span-2">
-    <label class="block text-gray-700 font-semibold mb-1">Delivery Date:</label>
-    <input formControlName="deliveryDate" type="date" class="w-full border rounded p-2 focus:outline-none focus:ring-2 focus:ring-blue-400" />
-  </div>
-
-  <fieldset formArrayName="items" class="mb-6 border border-gray-300 p-4 rounded bg-slate-200 col-span-2">
-    <legend class="text-lg font-bold text-gray-800">Items</legend>
-    <div *ngFor="let item of items.controls; let i = index" [formGroupName]="i" class="mb-4 p-4 border rounded bg-white">
-      <div class="mb-4">
-        <label class="block text-gray-700 mb-1">Item Name:</label>
-        <input formControlName="name" type="text" class="w-full border rounded p-2 focus:outline-none focus:ring-2 focus:ring-blue-400" />
-        <div *ngIf="item.get('name')?.invalid && item.get('name')?.touched" class="text-red-600 text-sm mt-1">
-          Item name is required.
-        </div>
-      </div>
-      <div class="mb-4">
-        <label class="block text-gray-700 mb-1">Unit:</label>
-        <input formControlName="unit" type="text" class="w-full border rounded p-2 focus:outline-none focus:ring-2 focus:ring-blue-400" />
-        <div *ngIf="item.get('unit')?.invalid && item.get('unit')?.touched" class="text-red-600 text-sm mt-1">
-          Unit is required.
-        </div>
-      </div>
-      <div class="mb-4 grid grid-cols-2 gap-4">
-        <div>
-          <label class="block text-gray-700 mb-1">Quantity:</label>
-          <input formControlName="quantity" type="number" class="w-full border rounded p-2 focus:outline-none focus:ring-2 focus:ring-blue-400" />
-          <div *ngIf="item.get('quantity')?.invalid && item.get('quantity')?.touched" class="text-red-600 text-sm mt-1">
-            Quantity is required.
-          </div>
-        </div>
-        <div>
-          <label class="block text-gray-700 mb-1">Unit Net Price:</label>
-          <input formControlName="unitNetPrice" type="number" step="0.01" class="w-full border rounded p-2 focus:outline-none focus:ring-2 focus:ring-blue-400" />
-          <div *ngIf="item.get('unitNetPrice')?.invalid && item.get('unitNetPrice')?.touched" class="text-red-600 text-sm mt-1">
-            Unit Net Price is required.
-          </div>
-        </div>
-      </div>
-      <div class="mb-4">
-        <label class="block text-gray-700 mb-1">Discount:</label>
-        <input formControlName="discount" type="number" step="0.01" class="w-full border rounded p-2 focus:outline-none focus:ring-2 focus:ring-blue-400" />
-      </div>
-      <div class="mb-4 grid grid-cols-3 gap-4">
-        <div>
-          <label class="block text-gray-700 mb-1">Net Value:</label>
-          <input formControlName="netValue" type="number" step="0.01" readonly class="w-full border rounded p-2 bg-gray-100" />
-        </div>
-        <div>
-          <label class="block text-gray-700 mb-1">Tax Rate (%):</label>
-          <input formControlName="taxRate" type="number" step="0.01" class="w-full border rounded p-2 focus:outline-none focus:ring-2 focus:ring-blue-400" />
-        </div>
-        <div>
-          <label class="block text-gray-700 mb-1">Tax Amount:</label>
-          <input formControlName="taxAmount" type="number" step="0.01" readonly class="w-full border rounded p-2 bg-gray-100" />
-        </div>
-      </div>
-      <div class="mb-4">
-        <label class="block text-gray-700 mb-1">Gross Value:</label>
-        <input formControlName="grossValue" type="number" step="0.01" readonly class="w-full border rounded p-2 bg-gray-100" />
-      </div>
-      <button type="button" (click)="removeItem(i)" class="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600">Remove Item</button>
-    </div>
-    <button type="button" (click)="addItem()" class="mt-2 px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600">Add Item</button>
-  </fieldset>
-
-  <div class="mb-4 grid grid-cols-3 gap-4 col-span-2">
-    <div>
-      <label class="block text-gray-700 mb-1">Total Net Amount:</label>
-      <input formControlName="totalNetAmount" type="number" step="0.01" readonly class="w-full border rounded p-2 bg-gray-100" />
-    </div>
-    <div>
-      <label class="block text-gray-700 mb-1">Total Tax Amount:</label>
-      <input formControlName="totalTaxAmount" type="number" step="0.01" readonly class="w-full border rounded p-2 bg-gray-100" />
-    </div>
-    <div>
-      <label class="block text-gray-700 mb-1">Total Gross Amount:</label>
-      <input formControlName="totalGrossAmount" type="number" step="0.01" readonly class="w-full border rounded p-2 bg-gray-100" />
+    <div *ngIf="imagePreview">
+      <img [src]="imagePreview" alt="Podgląd zdjęcia" class="max-w-full h-auto border rounded" />
     </div>
   </div>
-
-  <div class="mb-6 col-span-2">
-    <label class="block text-gray-700 mb-1">Currency:</label>
-    <input formControlName="currency" type="text" class="w-full border rounded p-2 focus:outline-none focus:ring-2 focus:ring-blue-400" />
-  </div>
-
-  <div class="mb-6 col-span-2">
-    <label class="block text-gray-700 mb-1">Remarks:</label>
-    <textarea formControlName="remarks" rows="4" class="w-full border rounded p-2 focus:outline-none focus:ring-2 focus:ring-blue-400"></textarea>
-  </div>
-
-  <button type="submit" class="w-full py-3 bg-blue-600 text-white rounded hover:bg-blue-700 col-span-2">Save Invoice</button>
-  <div class="w-full col-span-2">
-    <div *ngIf="errorMessage" class="mb-4 p-4 bg-red-100 border border-red-400 text-red-700 rounded text-center">
-      {{ errorMessage }}
-    </div>
-    <div *ngIf="successMessage" class="mb-4 p-4 bg-green-100 border border-green-400 text-green-700 rounded text-center">
-      {{ successMessage }}
-    </div>
-  </div>
-</form>
-
+</div>

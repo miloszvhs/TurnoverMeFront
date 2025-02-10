@@ -1,4 +1,4 @@
-<div *ngIf="isLoggedIn()" class="min-h-screen flex items-center justify-center bg-gray-200">
+<div *ngIf="!isLoggedIn()" class="min-h-screen flex items-center justify-center bg-gray-200">
   <div class="w-full max-w-md">
     <form class="bg-white shadow-lg rounded px-8 py-6" (ngSubmit)="login()">
       <h2 class="text-center text-2xl font-bold mb-6 text-gray-800">Log In</h2>
@@ -46,7 +46,7 @@
     </form>
   </div>
 </div>
-<div *ngIf="!isLoggedIn()" class="flex h-screen bg-gray-100">
+<div *ngIf="isLoggedIn()" class="flex h-screen bg-gray-100">
   <div class="hidden md:flex flex-col w-64 bg-gray-800">
     <div class="flex items-center justify-center h-16 bg-gray-900">
       <span class="text-white font-bold">TURNOVERME</span>

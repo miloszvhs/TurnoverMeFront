@@ -1,11 +1,11 @@
 import { HttpClient } from '@angular/common/http';
 import { Inject, Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { catchError, map, Observable, of } from 'rxjs';
 import { API } from '../api-url.token';
-
+import { CircuitPathDTO, CircuitPathRequest } from '../Dtos/CircuitPathDTO';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class CircuitpathService {
   private apiUrl: string;
@@ -14,23 +14,26 @@ export class CircuitpathService {
     this.apiUrl = apiUrl;
   }
 
-  getCircuitPaths(): Observable<CircuitPathDTO[]> {
-    return this.httpClient.get<CircuitPathDTO[]>(`${this.apiUrl}/circuptpath`);
+  fetchPaths(): Observable<CircuitPathDTO[]> {
+    return this.httpClient.get<CircuitPathDTO[]>(`${this.apiUrl}/circuit-path`);
   }
-}
 
-export interface CircuitPathDTO {
-  invoiceId: string;
-  name: string;
-  group: GroupDTO[];
-
-}
-
-interface GroupDTO {
-  name: string;
-  users: UserDTO[];
-}
-
-interface UserDTO {
-  groupId: string;
+  postCircuitPath(dto: CircuitPathRequest) {
+    return this.httpClient.post(`${this.apiUrl}/circuit-path`, dto).pipe(
+      map((response) => {
+        return {
+          status: true,
+          message: 'Workflow posted successfully',
+          data: response,
+        };
+      }),
+      catchError((error) => {
+        return of({
+          status: false,
+          message: 'Workflow posting failed',
+          error: error,
+        });
+      })
+    );
+  }
 }

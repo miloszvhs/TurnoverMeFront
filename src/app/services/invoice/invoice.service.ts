@@ -27,7 +27,7 @@ export class InvoiceService {
   }
 
   getInvoices(): Observable<InvoiceDTO[]> {
-    return this.http.get<InvoiceDTO[]>(`${this.apiUrl}/invoices/invoices`);
+    return this.http.get<InvoiceDTO[]>(`${this.apiUrl}/invoices`);
   }
 
   private mapToInvoiceDto(data: any): InvoiceDto {

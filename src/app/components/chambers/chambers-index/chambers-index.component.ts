@@ -6,54 +6,9 @@ import {InvoiceStatusDto} from '../../../Dtos/Enums/invoice-status-dto';
 import {InvoiceService} from '../../../services/invoice/invoice.service';
 import {InvoiceApiService} from '../../../services/invoice/invoice-api.service';
 import {InvoiceCircuitDTO} from '../../../Dtos/InvoiceCircuitDto';
-
-interface AddressDTO {
-  street: string;
-  streetNumber: string;
-  flatNumber: string;
-  city: string;
-  postCode: string;
-  country: string;
-}
-
-interface TaxNumberDTO {
-  taxNumber: string;
-  taxPrefix: string;
-}
-
-interface PartyDTO {
-  name: string;
-  address: AddressDTO;
-  taxNumber: TaxNumberDTO;
-}
-
-interface ItemDTO {
-  name: string;
-  unit: string;
-  quantity: number;
-  unitNetPrice: number;
-  discount: number;
-  netValue: number;
-  taxRate: number;
-  taxAmount: number;
-  grossValue: number;
-}
-
-interface InvoiceDTO {
-  invoiceNumber: string;
-  issueDate: Date;
-  seller: PartyDTO;
-  buyer: PartyDTO;
-  hasReceiver: boolean;
-  receiver?: PartyDTO;
-  deliveryDate: Date | null;
-  items: ItemDTO[];
-  totalNetAmount: number;
-  totalTaxAmount: number;
-  totalGrossAmount: number;
-  currency: string;
-  remarks: string;
-}
+import { InvoiceDTO } from '../../../Dtos/invoicedto';
+import { CircuitPathDTO } from '../../../Dtos/CircuitPathDTO';
+import { CircuitpathService } from '../../../services/circuitpathService';
 
 @Component({
   selector: 'app-chambers-index',
@@ -62,8 +17,8 @@ interface InvoiceDTO {
     NgForOf,
     FormsModule,
     NgIf,
-    DatePipe,
-  ],
+    DatePipe
+],
   styleUrls: ['./chambers-index.component.css']
 })
 export class ChambersIndexComponent implements OnInit {
@@ -75,10 +30,12 @@ export class ChambersIndexComponent implements OnInit {
   recipients: { users: { id: string; name: string }[], groups: { id: string; name: string }[] } = { users: [], groups: [] };
   selectedRecipientType: 'group' | 'user' = 'group';
   selectedRecipient: string | null = null;
+  paths: CircuitPathDTO[] = [];
 
   constructor(private http: HttpClient,
               private invoiceService: InvoiceService,
-              private invoiceApiService: InvoiceApiService) {}
+              private invoiceApiService: InvoiceApiService,
+              private circuitPathService: CircuitpathService) {}
 
   ngOnInit(): void {
     this.invoiceService.getInvoices().subscribe((data) => {
@@ -90,7 +47,7 @@ export class ChambersIndexComponent implements OnInit {
     this.selectedInvoice = { ...invoice };
     this.selectedPath = null;
     this.selectedRecipient = null;
-    this.fetchPaths(invoice.invoiceNumber);
+    this.fetchPaths();
     this.fetchRecipients();
   }
   closeModal(): void {
@@ -99,7 +56,7 @@ export class ChambersIndexComponent implements OnInit {
 
   saveInvoice(): void {
     if (!this.selectedPath || !this.selectedRecipient) {
-      alert("Please select a path and a recipient.");
+      alert("Wybierz ścieżkę oraz odbiorcę.");
       return;
     }
 
@@ -111,21 +68,14 @@ export class ChambersIndexComponent implements OnInit {
       createdAt: new Date(),
     };
 
-    console.log("Invoice Circuit Saved:", invoiceCircuit);
+    console.log("Faktura wysłana do obiegu:", invoiceCircuit);
     this.closeModal();
   }
 
-  fetchPaths(invoiceNumber: string): void {
-    const paths = [
-      { id: '1', name: 'IT Support' },
-      { id: '2', name: 'Software Development' },
-      { id: '3', name: 'Cybersecurity' },
-      { id: '4', name: 'Cloud Computing' },
-      { id: '5', name: 'DevOps' },
-    ];
-    setTimeout(() => {
-      this.invoicePaths[invoiceNumber] = paths;
-    }, 500);
+  fetchPaths(): void {
+    this.circuitPathService.fetchPaths().subscribe(data => {
+      this.paths = data;
+    });
   }
 
   fetchRecipients(): void {

@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import {NgForOf, NgIf} from "@angular/common";
 import {AbstractControl, FormArray, FormBuilder, FormGroup, ReactiveFormsModule, Validators} from "@angular/forms";
 import {InvoiceApiService} from '../../../services/invoice/invoice-api.service';
-import {InvoiceDTO} from '../../../Dtos/invoicedto';
+import {InvoiceDTO, InvoiceStatus} from '../../../Dtos/invoicedto';
 import {Router} from '@angular/router';
 
 @Component({
@@ -20,6 +20,8 @@ export class ChambersCreateComponent {
   private invoiceApiService: InvoiceApiService;
   protected errorMessage: any;
   protected successMessage: any;
+  protected imagePreview: string | ArrayBuffer | null = null;
+  protected selectedImage: File | null = null;
 
   constructor(private fb: FormBuilder, invoiceApiService: InvoiceApiService, private router: Router) {
     this.invoiceApiService = invoiceApiService;
@@ -28,6 +30,7 @@ export class ChambersCreateComponent {
   toInvoiceDTO(): InvoiceDTO {
     const formValue = this.invoiceForm.value;
     return {
+      id: "ID",
       invoiceNumber: formValue.invoiceNumber,
       issueDate: formValue.issueDate,
       seller: formValue.seller,
@@ -40,7 +43,12 @@ export class ChambersCreateComponent {
       totalTaxAmount: formValue.totalTaxAmount,
       totalGrossAmount: formValue.totalGrossAmount,
       currency: formValue.currency,
-      remarks: formValue.remarks
+      remarks: formValue.remarks,
+      fileAsBase64: formValue.fileAsBase64,
+      contractor: "Contractor",
+      description: "Contractor",
+      paymentDue: "Lol",
+      status: InvoiceStatus.New
     };
   }
 
@@ -48,6 +56,7 @@ export class ChambersCreateComponent {
     this.invoiceForm = this.fb.group({
       invoiceNumber: [''],
       issueDate: [new Date(), Validators.required],
+      fileAsBase64: [''],
       seller: this.fb.group({
         name: ['', Validators.required],
         address: this.fb.group({
@@ -174,11 +183,28 @@ export class ChambersCreateComponent {
     return Math.round(value * 100) / 100;
   }
 
+  onFileSelected(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    if (input.files && input.files.length > 0) {
+      this.selectedImage = input.files[0];
+
+      const reader = new FileReader();
+      reader.onload = () => {
+        const result = reader.result as string;
+        const base64String = result.split(',')[1];
+
+        this.invoiceForm.patchValue({ fileAsBase64: base64String });
+        this.imagePreview = result;
+      };
+      reader.readAsDataURL(this.selectedImage);
+    }
+  }
+
   onSubmit(): void {
     this.invoiceForm.markAllAsTouched();
 
     if (this.invoiceForm.invalid) {
-      this.errorMessage = 'Please complete all required fields correctly';
+      this.errorMessage = 'Proszę uzupełnić wszystkie wymagane pola';
       this.successMessage = '';
       return;
     }
@@ -187,21 +213,21 @@ export class ChambersCreateComponent {
     this.successMessage = '';
 
     if (this.invoiceForm?.valid) {
-      console.log('Invoice data:', this.invoiceForm.value);
+      console.log('Dane faktury:', this.invoiceForm.value);
       this.invoiceApiService.postInvoice(this.toInvoiceDTO())
         .subscribe({
           next: (response) => {
-            this.successMessage = 'Invoice saved!';
+            this.successMessage = 'Faktura zapisana!';
             setTimeout(() => {
               this.router.navigate(['/chambers-index']);
             }, 1500);
           },
           error: (err) => {
-            this.errorMessage = err.error?.message || 'Internal server error. Try again.';
+            this.errorMessage = err.error?.message || 'Wewnętrzny błąd serwera. Spróbuj ponownie.';
           }
         });
     } else {
-      console.log('Form contains errors!');
+      console.log('Formularz zawiera błędy!');
     }
   }
 }

@@ -4,8 +4,6 @@ import {LoginRequest} from '../../models/login-request';
 import {Router, RouterLink, RouterLinkActive, RouterOutlet} from '@angular/router';
 import {NgIf} from '@angular/common';
 import {FormsModule} from '@angular/forms';
-import {HttpErrorResponse} from '@angular/common/http';
-import {LoginResponse} from '../../models/login-response';
 
 @Component({
   selector: 'app-login',

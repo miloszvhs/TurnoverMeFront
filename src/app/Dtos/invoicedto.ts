@@ -1,5 +1,10 @@
 export interface InvoiceDTO {
+  id: string;
   invoiceNumber: string;
+  status: InvoiceStatus;
+  description: string;
+  paymentDue: any;
+  contractor: string;
   issueDate: Date;
   seller: PartyDTO;
   buyer: PartyDTO;
@@ -12,6 +17,14 @@ export interface InvoiceDTO {
   totalGrossAmount: number;
   currency: string;
   remarks: string;
+  fileAsBase64: string;
+}
+
+export enum InvoiceStatus {
+  New = "New",
+  Approved = "Approved",
+  Rejected = "Rejected",
+  PendingApproval = "PendingApproval"
 }
 
 interface AddressDTO {
