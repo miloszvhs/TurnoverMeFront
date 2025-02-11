@@ -2,24 +2,24 @@ import { HttpClient } from '@angular/common/http';
 import { Inject, Injectable } from '@angular/core';
 import { catchError, map, Observable, of } from 'rxjs';
 import { API } from '../api-url.token';
-import { CircuitPathDTO, CircuitPathRequest } from '../Dtos/CircuitPathDTO';
+import { CircuitPathDTO as WorkflowDTO, WorkflowRequest } from '../Dtos/CircuitPathDTO';
 
 @Injectable({
   providedIn: 'root',
 })
-export class CircuitpathService {
+export class WorkflowService {
   private apiUrl: string;
 
   constructor(private httpClient: HttpClient, @Inject(API) apiUrl: string) {
     this.apiUrl = apiUrl;
   }
 
-  fetchPaths(): Observable<CircuitPathDTO[]> {
-    return this.httpClient.get<CircuitPathDTO[]>(`${this.apiUrl}/circuit-path`);
+  fetchWorkflows(): Observable<WorkflowDTO[]> {
+    return this.httpClient.get<WorkflowDTO[]>(`${this.apiUrl}/workflow`);
   }
 
-  postCircuitPath(dto: CircuitPathRequest) {
-    return this.httpClient.post(`${this.apiUrl}/circuit-path`, dto).pipe(
+  postWorkflow(dto: WorkflowRequest) {
+    return this.httpClient.post(`${this.apiUrl}/workflow`, dto).pipe(
       map((response) => {
         return {
           status: true,

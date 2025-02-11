@@ -6,6 +6,7 @@ export interface InvoiceDTO {
   paymentDue: any;
   contractor: string;
   issueDate: Date;
+  dueDate: Date;
   seller: PartyDTO;
   buyer: PartyDTO;
   hasReceiver: boolean;

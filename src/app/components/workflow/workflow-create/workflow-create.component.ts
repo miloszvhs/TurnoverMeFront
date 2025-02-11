@@ -2,29 +2,29 @@ import { Component, OnInit } from '@angular/core';
 import { FormArray, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { GroupService } from '../../../services/group.service';
 import { NgFor, NgIf } from '@angular/common';
-import { CircuitpathService } from '../../../services/circuitpathService';
-import { CircuitPathDTO, CircuitPathRequest, GroupDTO, StageDTO } from '../../../Dtos/CircuitPathDTO';
+import { WorkflowService } from '../../../services/workflowService';
+import { CircuitPathDTO, WorkflowRequest, GroupDTO, StageDTO } from '../../../Dtos/CircuitPathDTO';
 import { Router } from '@angular/router';
 
 @Component({
-  selector: 'app-circuitpath-create',
+  selector: 'app-workflow-create',
   imports: [
     NgFor,
     ReactiveFormsModule,
     NgIf
   ],
-  templateUrl: './circuitpath-create.component.html',
-  styleUrls: ['./circuitpath-create.component.css']
+  templateUrl: './workflow-create.component.html',
+  styleUrls: ['./workflow-create.component.css']
 })
-export class CircuitpathCreateComponent implements OnInit {
-  circuitPathForm: FormGroup = new FormGroup({});
+export class WorkflowCreateComponent implements OnInit {
+  workflowForm: FormGroup = new FormGroup({});
   allGroups: GroupDTO[] = [];
   successMessage: string | null = null;
   errorMessage: string | null = null;
   
   constructor(
     private groupService: GroupService, 
-    private circuitPathService: CircuitpathService,
+    private workflowService: WorkflowService,
     private router: Router
   ) {}
 
@@ -33,14 +33,14 @@ export class CircuitpathCreateComponent implements OnInit {
       this.allGroups = groups.groups;
     });
 
-    this.circuitPathForm = new FormGroup({
+    this.workflowForm = new FormGroup({
       name: new FormControl('', Validators.required),
       stages: new FormArray([])
     });
   }
 
   get stages(): FormArray {
-    return this.circuitPathForm.get('stages') as FormArray;
+    return this.workflowForm.get('stages') as FormArray;
   }
 
   addStage(): void {
@@ -71,15 +71,15 @@ export class CircuitpathCreateComponent implements OnInit {
   }
 
   onSubmit(): void {
-    if (this.circuitPathForm.valid) {
+    if (this.workflowForm.valid) {
       const dto = this.toDto();
-      this.circuitPathService.postCircuitPath(dto).subscribe(
+      this.workflowService.postWorkflow(dto).subscribe(
         (result) => {
           if (result.status) {
             this.successMessage = result.message;
             this.errorMessage = null;
             setTimeout(() => {
-              this.router.navigate(['/circuitpath-index']);
+              this.router.navigate(['/workflow-index']);
             }, 2000);
           } else {
             this.errorMessage = result.message;
@@ -97,15 +97,15 @@ export class CircuitpathCreateComponent implements OnInit {
           console.error('Niespodziewany błąd: ', error);
         }
       );
-      console.log('Dane formularza:', this.circuitPathForm.value);
+      console.log('Dane formularza:', this.workflowForm.value);
     } else {
       console.log('Formularz zawiera błędy!');
     }
   }
   
 
-  toDto(): CircuitPathRequest {
-    const formValue = this.circuitPathForm.value;
+  toDto(): WorkflowRequest {
+    const formValue = this.workflowForm.value;
     const stages: StageDTO[] = formValue.stages.map((stage: any) => ({
       order: stage.order,
       name: stage.stageName,

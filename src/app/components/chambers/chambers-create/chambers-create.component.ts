@@ -33,6 +33,7 @@ export class ChambersCreateComponent {
       id: "ID",
       invoiceNumber: formValue.invoiceNumber,
       issueDate: formValue.issueDate,
+      dueDate: formValue.dueDate,
       seller: formValue.seller,
       buyer: formValue.buyer,
       hasReceiver: formValue.hasReceiver,
@@ -56,6 +57,7 @@ export class ChambersCreateComponent {
     this.invoiceForm = this.fb.group({
       invoiceNumber: [''],
       issueDate: [new Date(), Validators.required],
+      dueDate: [new Date(), Validators.required],
       fileAsBase64: [''],
       seller: this.fb.group({
         name: ['', Validators.required],

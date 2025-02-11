@@ -23,7 +23,7 @@ interface UserDTO {
   name: string;
 }
 
-export interface CircuitPathRequest{
+export interface WorkflowRequest{
   name: string;
   stages: StageDTO[];
 }

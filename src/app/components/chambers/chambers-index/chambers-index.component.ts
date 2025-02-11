@@ -8,7 +8,7 @@ import {InvoiceApiService} from '../../../services/invoice/invoice-api.service';
 import {InvoiceCircuitDTO} from '../../../Dtos/InvoiceCircuitDto';
 import { InvoiceDTO } from '../../../Dtos/invoicedto';
 import { CircuitPathDTO } from '../../../Dtos/CircuitPathDTO';
-import { CircuitpathService } from '../../../services/circuitpathService';
+import { WorkflowService } from '../../../services/workflowService';
 
 @Component({
   selector: 'app-chambers-index',
@@ -35,7 +35,7 @@ export class ChambersIndexComponent implements OnInit {
   constructor(private http: HttpClient,
               private invoiceService: InvoiceService,
               private invoiceApiService: InvoiceApiService,
-              private circuitPathService: CircuitpathService) {}
+              private circuitPathService: WorkflowService) {}
 
   ngOnInit(): void {
     this.invoiceService.getInvoices().subscribe((data) => {
@@ -73,7 +73,7 @@ export class ChambersIndexComponent implements OnInit {
   }
 
   fetchPaths(): void {
-    this.circuitPathService.fetchPaths().subscribe(data => {
+    this.circuitPathService.fetchWorkflows().subscribe(data => {
       this.paths = data;
     });
   }
