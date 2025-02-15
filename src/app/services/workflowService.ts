@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Inject, Injectable } from '@angular/core';
 import { catchError, map, Observable, of } from 'rxjs';
 import { API } from '../api-url.token';
-import { CircuitPathDTO as WorkflowDTO, WorkflowRequest } from '../Dtos/CircuitPathDTO';
+import { WorkflowDTO, WorkflowRequest } from '../Dtos/WorkflowDTO';
 
 @Injectable({
   providedIn: 'root',
@@ -23,14 +23,14 @@ export class WorkflowService {
       map((response) => {
         return {
           status: true,
-          message: 'Workflow posted successfully',
+          message: 'Pomyślnie utworzono procedure',
           data: response,
         };
       }),
       catchError((error) => {
         return of({
           status: false,
-          message: 'Workflow posting failed',
+          message: 'Tworzenie procedury nie powiodło się',
           error: error,
         });
       })

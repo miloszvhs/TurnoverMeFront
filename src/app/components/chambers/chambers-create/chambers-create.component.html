@@ -3,7 +3,7 @@
     <form [formGroup]="invoiceForm" (ngSubmit)="onSubmit()"
       class="max-w-4xl mx-auto p-6 bg-white shadow-md rounded grid md:grid-cols-2 gap-4">
       <div class="mb-4 col-span-2">
-        <label class="block text-gray-700 font-semibold mb-1">Number faktury:</label>
+        <label class="block text-gray-700 font-semibold mb-1">Numer faktury:</label>
         <input formControlName="invoiceNumber" type="text"
           class="w-full border rounded p-2 focus:outline-none focus:ring-2 focus:ring-blue-400" />
       </div>
@@ -20,17 +20,15 @@
           class="w-full border rounded p-2 focus:outline-none focus:ring-2 focus:ring-blue-400" />
       </div>
 
-      <input formControlName="fileAsBase64" type="hidden" />
-
       <fieldset formGroupName="seller"
-        class="mb-6 border border-gray-300 p-4 rounded bg-sky-100 col-span-2 md:col-span-1">
-        <legend class="text-lg font-bold text-gray-800">Sprzedawca</legend>
+        class="mb-6 border border-gray-300 p-4 rounded bg-sky-100 col-span-2 md:col-span-2">
+        <legend class="text-lg font-bold text-gray-800">Kontrahent</legend>
         <div class="mb-4">
           <label class="block text-gray-700 mb-1">Nazwa:</label>
           <input formControlName="name" type="text"
             class="w-full border rounded p-2 focus:outline-none focus:ring-2 focus:ring-blue-400" />
         </div>
-        <fieldset formGroupName="address" class="mb-4 border border-gray-200 p-4 rounded bg-white">
+        <!-- <fieldset formGroupName="address" class="mb-4 border border-gray-200 p-4 rounded bg-white">
           <legend class="text-md font-semibold text-gray-700">Adres</legend>
           <div class="mb-4">
             <label class="block text-gray-600 mb-1">Ulica:</label>
@@ -66,7 +64,7 @@
             <input formControlName="country" type="text"
               class="w-full border rounded p-2 focus:outline-none focus:ring-2 focus:ring-blue-400" />
           </div>
-        </fieldset>
+        </fieldset> -->
         <fieldset formGroupName="taxNumber"
           class="mb-4 border border-gray-200 p-4 rounded grid grid-cols-2 gap-4 bg-white">
           <div class="mb-4 grow">
@@ -81,7 +79,7 @@
           </div>
         </fieldset>
       </fieldset>
-      <fieldset formGroupName="buyer"
+      <!-- <fieldset formGroupName="buyer"
         class="mb-6 border border-gray-300 p-4 rounded bg-sky-100 col-span-2 md:col-span-1">
         <legend class="text-lg font-bold text-gray-800">Nabywca</legend>
         <div class="mb-4">
@@ -139,16 +137,16 @@
               class="w-full border rounded p-2 focus:outline-none focus:ring-2 focus:ring-blue-400" />
           </div>
         </fieldset>
-      </fieldset>
+      </fieldset> -->
 
-      <div class="mb-6 col-span-2">
+      <!-- <div class="mb-6 col-span-2">
         <label class="inline-flex items-center">
           <input type="checkbox" formControlName="hasReceiver" class="form-checkbox h-5 w-5 text-blue-600" />
           <span class="ml-2 text-gray-700">Dodaj dane odbiorcy</span>
         </label>
-      </div>
+      </div> -->
 
-      <fieldset *ngIf="invoiceForm.get('hasReceiver')?.value" formGroupName="receiver"
+      <!-- <fieldset *ngIf="invoiceForm.get('hasReceiver')?.value" formGroupName="receiver"
         class="mb-6 border border-gray-300 p-4 rounded rounded bg-emerald-100 col-span-2">
         <legend class="text-lg font-bold text-gray-800">Odbiorca</legend>
         <div class="mb-4">
@@ -206,15 +204,9 @@
               class="w-full border rounded p-2 focus:outline-none focus:ring-2 focus:ring-blue-400" />
           </div>
         </fieldset>
-      </fieldset>
+      </fieldset> -->
 
-      <div class="mb-4 col-span-2">
-        <label class="block text-gray-700 font-semibold mb-1">Delivery Date:</label>
-        <input formControlName="deliveryDate" type="date"
-          class="w-full border rounded p-2 focus:outline-none focus:ring-2 focus:ring-blue-400" />
-      </div>
-
-      <fieldset formArrayName="items" class="mb-6 border border-gray-300 p-4 rounded bg-slate-200 col-span-2">
+      <!-- <fieldset formArrayName="items" class="mb-6 border border-gray-300 p-4 rounded bg-slate-200 col-span-2">
         <legend class="text-lg font-bold text-gray-800">Pozycje</legend>
         <div *ngFor="let item of items.controls; let i = index" [formGroupName]="i"
           class="mb-4 p-4 border rounded bg-white">
@@ -293,22 +285,22 @@
           class="mt-2 px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600">
           Dodaj pozycję
         </button>
-      </fieldset>
+      </fieldset> -->
 
       <div class="mb-4 grid grid-cols-3 gap-4 col-span-2">
         <div>
           <label class="block text-gray-700 mb-1">Wartość całkowita netto:</label>
-          <input formControlName="totalNetAmount" type="number" step="0.01" readonly
+          <input formControlName="totalNetAmount" type="number" step="0.01"
             class="w-full border rounded p-2 bg-gray-100" />
         </div>
         <div>
           <label class="block text-gray-700 mb-1">Wartość całkowita VAT:</label>
-          <input formControlName="totalTaxAmount" type="number" step="0.01" readonly
+          <input formControlName="totalTaxAmount" type="number" step="0.01"
             class="w-full border rounded p-2 bg-gray-100" />
         </div>
         <div>
           <label class="block text-gray-700 mb-1">Wartość całkowita brutto:</label>
-          <input formControlName="totalGrossAmount" type="number" step="0.01" readonly
+          <input formControlName="totalGrossAmount" type="number" step="0.01"
             class="w-full border rounded p-2 bg-gray-100" />
         </div>
       </div>
@@ -340,11 +332,14 @@
     </form>
   </div>
   <div class="flex flex-col items-center p-4 border rounded bg-gray-50">
+    <input formControlName="fileAsBase64" type="hidden" />
     <label for="imageUpload" class="block text-gray-700 font-semibold mb-2">
       Wybierz zdjęcie
     </label>
     <input id="imageUpload" type="file" accept="image/*" (change)="onFileSelected($event)" class="mb-4" />
-
+    <div *ngIf="invoiceForm.get('fileAsBase64')?.invalid && invoiceForm.get('fileAsBase64')?.touched" class="text-red-500 text-sm mt-1">
+      Załącznik faktury jest wymagany.
+    </div>
     <div *ngIf="imagePreview">
       <img [src]="imagePreview" alt="Podgląd zdjęcia" class="max-w-full h-auto border rounded" />
     </div>

@@ -1,64 +1,74 @@
 <div class="container mx-auto px-4 py-6">
-  <h2 class="text-2xl font-bold mb-4">Ścieżki</h2>
+  <h2 class="text-2xl font-bold mb-4">Procedury</h2>
   <div class="overflow-x-auto">
     <table class="min-w-full divide-y divide-gray-200">
       <thead class="bg-gray-50">
         <tr>
           <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">ID</th>
-          <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Nazwa ścieżki</th>
+          <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Nazwa procedury</th>
         </tr>
       </thead>
       <tbody class="bg-white divide-y divide-gray-200">
-        <tr *ngFor="let path of paths" (click)="showDetails(path)" class="hover:bg-gray-100 cursor-pointer">
-          <td class="px-6 py-4 whitespace-nowrap">{{ path.id }}</td>
-          <td class="px-6 py-4 whitespace-nowrap">{{ path.name }}</td>
+        <tr *ngFor="let workflow of workflows" (click)="showDetails(workflow)" class="hover:bg-gray-100 cursor-pointer">
+          <td class="px-6 py-4 whitespace-nowrap">{{ workflow.id }}</td>
+          <td class="px-6 py-4 whitespace-nowrap">{{ workflow.name }}</td>
         </tr>
       </tbody>
     </table>
   </div>
 </div>
 
-<div *ngIf="selectedPath" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-60 z-50">
-    <div class="bg-white rounded-xl shadow-2xl max-w-lg w-full transform transition-all duration-300">
-      <div class="flex justify-between items-center p-6 border-b border-gray-200">
-        <h3 class="text-xl font-bold text-gray-900">Szczegóły ścieżki</h3>
-        <button type="button" (click)="closeModal()" class="text-gray-600 hover:text-gray-800 transition-colors">
-          <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-              d="M6 18L18 6M6 6l12 12"></path>
-          </svg>
-        </button>
+<div *ngIf="selectedWorkflow" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-60 z-50">
+  <div class="bg-white rounded-xl shadow-2xl max-w-3xl w-full transform transition-all duration-300">
+    <div class="flex justify-between items-center p-6 border-b border-gray-200">
+      <h3 class="text-xl font-bold text-gray-900">Szczegóły ścieżki</h3>
+      <button type="button" (click)="closeModal()" class="text-gray-600 hover:text-gray-800 transition-colors">
+        <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+            d="M6 18L18 6M6 6l12 12"></path>
+        </svg>
+      </button>
+    </div>
+    
+    <div class="p-6 space-y-6">
+      <div class="mb-4">
+        <div class="mb-2 text-center">
+          <span class="font-semibold text-gray-700">ID:</span>
+          <span class="text-gray-700">{{ selectedWorkflow.id }}</span>
+        </div>
+        <div class="text-center">
+          <span class="font-semibold text-gray-700">Nazwa: </span>
+          <span class="text-gray-700">{{ selectedWorkflow.name }}</span>
+        </div>
       </div>
-      <div class="p-6 space-y-4">
-        <p class="text-gray-700">
-          <span class="font-semibold">ID:</span> {{ selectedPath.id }}
-        </p>
-        <p class="text-gray-700">
-          <span class="font-semibold">Nazwa:</span> {{ selectedPath.name }}
-        </p>
-        <h4 class="text-lg font-semibold text-gray-800 mt-4">Etapy:</h4>
-        <ul class="divide-y divide-gray-100">
-          <li *ngFor="let stage of selectedPath.stages" class="py-3">
-            <p class="text-gray-700">
-              <span class="font-semibold">Nazwa:</span> {{ stage.name }}
-            </p>
-            <p class="text-gray-700">
-              <span class="font-semibold">Kolejność:</span> {{ stage.order }}
-            </p>
-            <p class="text-gray-700">
-              <span class="font-semibold">ID grupy:</span> {{ stage.groupId }}
-            </p>
-            <p class="text-gray-700">
-              <span class="font-semibold">Nazwa grupy:</span> {{ stage.group.name }}
-            </p>
-          </li>
-        </ul>
-      </div>
-      <div class="flex justify-end p-6 border-t border-gray-200">
-        <button type="button" (click)="closeModal()" class="px-5 py-2 bg-blue-500 text-white font-semibold rounded-md hover:bg-blue-600 transition-colors">
-          Close
-        </button>
+      
+      <h4 class="text-lg font-semibold text-gray-800">Etapy: </h4>
+      <div class="flex flex-col space-y-4">
+        <div *ngFor="let stage of selectedWorkflow.stages" class="w-full p-4 border rounded-lg shadow hover:shadow-md transition-shadow">
+          <div class="mb-2">
+            <span class="font-semibold text-gray-700">Nazwa:</span>
+            <span class="text-gray-700">{{ stage.name }}</span>
+          </div>
+          <div class="mb-2">
+            <span class="font-semibold text-gray-700">Kolejność: </span>
+            <span class="text-gray-700">{{ stage.order }}</span>
+          </div>
+          <div class="mb-2">
+            <span class="font-semibold text-gray-700">ID grupy: </span>
+            <span class="text-gray-700">{{ stage.groupId }}</span>
+          </div>
+          <div>
+            <span class="font-semibold text-gray-700">Nazwa grupy: </span>
+            <span class="text-gray-700">{{ stage.groupName }}</span>
+          </div>
+        </div>
       </div>
     </div>
+    
+    <div class="flex justify-end p-6 border-t border-gray-200">
+      <button type="button" (click)="closeModal()" class="px-5 py-2 bg-blue-500 text-white font-semibold rounded-md hover:bg-blue-600 transition-colors">
+        Close
+      </button>
+    </div>
   </div>
-  
+</div>

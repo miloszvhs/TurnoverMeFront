@@ -8,7 +8,6 @@ import {Router} from '@angular/router';
 @Component({
   selector: 'app-chambers-create',
     imports: [
-        NgForOf,
         NgIf,
         ReactiveFormsModule
     ],
@@ -30,25 +29,21 @@ export class ChambersCreateComponent {
   toInvoiceDTO(): InvoiceDTO {
     const formValue = this.invoiceForm.value;
     return {
-      id: "ID",
       invoiceNumber: formValue.invoiceNumber,
       issueDate: formValue.issueDate,
       dueDate: formValue.dueDate,
       seller: formValue.seller,
-      buyer: formValue.buyer,
-      hasReceiver: formValue.hasReceiver,
-      receiver: formValue.hasReceiver ? formValue.receiver : undefined,
-      deliveryDate: formValue.deliveryDate,
-      items: formValue.items,
+      //buyer: formValue.buyer,
+      //hasReceiver: formValue.hasReceiver,
+      //receiver: formValue.hasReceiver ? formValue.receiver : undefined,
+      //deliveryDate: formValue.deliveryDate,
+      //items: formValue.items,
       totalNetAmount: formValue.totalNetAmount,
       totalTaxAmount: formValue.totalTaxAmount,
       totalGrossAmount: formValue.totalGrossAmount,
       currency: formValue.currency,
       remarks: formValue.remarks,
-      fileAsBase64: formValue.fileAsBase64,
-      contractor: "Contractor",
-      description: "Contractor",
-      paymentDue: "Lol",
+      invoiceFileAsBase64: formValue.fileAsBase64,
       status: InvoiceStatus.New
     };
   }
@@ -58,7 +53,6 @@ export class ChambersCreateComponent {
       invoiceNumber: [''],
       issueDate: [new Date(), Validators.required],
       dueDate: [new Date(), Validators.required],
-      fileAsBase64: [''],
       seller: this.fb.group({
         name: ['', Validators.required],
         address: this.fb.group({
@@ -73,45 +67,46 @@ export class ChambersCreateComponent {
           taxNumber: [''],
           taxPrefix: ['']
         })
-      }),
-      buyer: this.fb.group({
-        name: ['', Validators.required],
-        address: this.fb.group({
-          street: [''],
-          streetNumber: [''],
-          flatNumber: [''],
-          city: [''],
-          postCode: [''],
-          country: ['']
-        }),
-        taxNumber: this.fb.group({
-          taxNumber: [''],
-          taxPrefix: ['']
-        })
-      }),
-      hasReceiver: [false],
-      receiver: this.fb.group({
-        name: [''],
-        address: this.fb.group({
-          street: [''],
-          streetNumber: [''],
-          flatNumber: [''],
-          city: [''],
-          postCode: [''],
-          country: ['']
-        }),
-        taxNumber: this.fb.group({
-          taxNumber: [''],
-          taxPrefix: ['']
-        })
-      }),
-      deliveryDate: [null],
-      items: this.fb.array([], Validators.required),
+      }, Validators.required),
+      // buyer: this.fb.group({
+      //   name: [''],
+      //   address: this.fb.group({
+      //     street: [''],
+      //     streetNumber: [''],
+      //     flatNumber: [''],
+      //     city: [''],
+      //     postCode: [''],
+      //     country: ['']
+      //   }),
+      //   taxNumber: this.fb.group({
+      //     taxNumber: [''],
+      //     taxPrefix: ['']
+      //   })
+      // }),
+      // hasReceiver: [false],
+      // receiver: this.fb.group({
+      //   name: [''],
+      //   address: this.fb.group({
+      //     street: [''],
+      //     streetNumber: [''],
+      //     flatNumber: [''],
+      //     city: [''],
+      //     postCode: [''],
+      //     country: ['']
+      //   }),
+      //   taxNumber: this.fb.group({
+      //     taxNumber: [''],
+      //     taxPrefix: ['']
+      //   })
+      // }),
+      // deliveryDate: [null],
+      // items: this.fb.array([]),
       totalNetAmount: [0],
       totalTaxAmount: [0],
       totalGrossAmount: [0],
       currency: [''],
-      remarks: ['']
+      remarks: [''],
+      fileAsBase64: ['', Validators.required]
     });
 
     this.addItem();

@@ -1,7 +1,7 @@
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Inject, Injectable } from '@angular/core';
 import { catchError, Observable, throwError } from 'rxjs';
-import { GroupDTO, GroupsResponseDto } from '../Dtos/CircuitPathDTO';
+import { GroupDTO, GroupsResponseDto } from '../Dtos/WorkflowDTO';
 import { API } from '../api-url.token';
 
 @Injectable({
@@ -14,22 +14,28 @@ export class GroupService {
     this.apiUrl = apiUrl;
   }
 
+  getGroup(groupId: string): Observable<GroupDTO>{
+    return this.http
+      .get<GroupDTO>(`${this.apiUrl}/admin/groups/group?groupId=${groupId}`)
+      .pipe(catchError(this.handleError));
+  }
+
   getGroups(): Observable<GroupsResponseDto> {
     return this.http
-      .get<GroupsResponseDto>(`${this.apiUrl}/groups`)
+      .get<GroupsResponseDto>(`${this.apiUrl}/admin/groups`)
       .pipe(catchError(this.handleError));
   }
 
   createGroup(request: CreateGroupRequest): Observable<CreateGroupResponse> {
     return this.http
-      .post<CreateGroupResponse>(`${this.apiUrl}/groups/create`, request)
+      .post<CreateGroupResponse>(`${this.apiUrl}/admin/groups/create`, request)
       .pipe(catchError(this.handleError));
   }
 
   assignGroupToUser(request: AssignGroupToUserRequest): Observable<any> {
     return this.http
       .post(
-        `${this.apiUrl}/groups/users/${request.userId}/group/${request.groupId}`,
+        `${this.apiUrl}/admin/groups/users/${request.userId}/group/${request.groupId}`,
         null
       )
       .pipe(catchError(this.handleError));
@@ -50,7 +56,7 @@ export interface AssignGroupToUserRequest {
 }
 
 export interface CreateGroupRequest {
-  name: string;
+  name: string | undefined;
 }
 
 export interface CreateGroupResponse {

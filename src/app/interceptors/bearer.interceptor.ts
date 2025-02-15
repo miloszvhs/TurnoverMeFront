@@ -8,7 +8,7 @@ export const bearerInterceptor: HttpInterceptorFn = (req, next) => {
   const authService = inject(AuthService);
   const isLoggedIn = authService.isLoggedIn();
 
-  if (!req.url.includes('/account/login') && isLoggedIn) {
+  if (!req.url.includes('/authentication/login') && isLoggedIn) {
     const token = localStorage.getItem('accessToken');
     if (token) {
       req = req.clone({
@@ -22,10 +22,10 @@ export const bearerInterceptor: HttpInterceptorFn = (req, next) => {
   return next(req).pipe(
     catchError((error) => {
       if (error instanceof HttpErrorResponse && error.status === 401) {
-        if (!req.url.includes('/account/login')) {
+        if (!req.url.includes('/authentication/login')) {
           return authService.refreshToken().pipe(
             switchMap((response: LoginResponse) => {
-              const newToken = response.accessToken;
+              const newToken = response.jwtToken;
               const clonedReq = req.clone({
                 setHeaders: {
                   Authorization: `Bearer ${newToken}`

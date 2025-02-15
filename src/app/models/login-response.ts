@@ -1,6 +1,9 @@
 export interface LoginResponse {
+  userId: string;
   tokenType: string;
-  accessToken: string;
+  jwtToken: string;
+  isLoggedIn: string;
   expiresIn: number;
   refreshToken: string;
+  forcePasswordChange: boolean | undefined;
 }

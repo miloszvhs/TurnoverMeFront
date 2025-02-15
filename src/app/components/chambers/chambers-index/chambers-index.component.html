@@ -1,48 +1,129 @@
 <div class="p-4 bg-gray-100 min-h-screen">
   <div class="bg-white shadow-md p-4 mb-4">
-    <h2 class="text-lg font-semibold">Faktura</h2>
+    <h2 class="text-lg font-semibold">Lista faktur</h2>
   </div>
 
-  <div class="bg-white shadow-md p-4">
+  <div class="bg-white shadow-md p-4 mb-4">
     <table class="w-full border border-gray-200">
       <thead>
       <tr class="bg-gray-200">
         <th class="border p-2"></th>
         <th class="border p-2">Numer faktury</th>
+        <th class="border p-2">Kontrahent</th>
         <th class="border p-2">Kwota netto</th>
         <th class="border p-2">Kwota VAT</th>
         <th class="border p-2">Kwota brutto</th>
         <th class="border p-2">Status</th>
-        <th class="border p-2">Data utworzenia</th>
+        <th class="border p-2">Termin płatności</th>
+        <th class="border p-2">Podgląd skanu</th>
       </tr>
       </thead>
       <tbody>
-      <tr *ngFor="let invoice of invoices">
-        <td class="border p-2 text-center cursor-pointer" (click)="openModal(invoice)">
-          <span>➤</span>
-        </td>
-        <td class="border p-2">{{ invoice.invoiceNumber }}</td>
-        <td class="border p-2">{{ invoice.totalNetAmount }}</td>
-        <td class="border p-2">{{ invoice.totalTaxAmount }}</td>
-        <td class="border p-2">{{ invoice.totalGrossAmount }}</td>
-        <td class="border p-2">{{ invoice.status }}</td>
-        <td class="border p-2">{{ invoice.issueDate | date:'short' }}</td>
-      </tr>
+        <ng-container *ngFor="let invoice of paginatedInvoices">
+        <tr>
+          <td class="border p-2 text-center cursor-pointer" *ngIf="invoice.status === 'New'" (click)="openModal(invoice)">
+            <span>➤</span>
+          </td>
+          <td class="border p-2 text-center cursor-pointer" *ngIf="invoice.status !== 'New'" (click)="openHistoryModal(invoice.id, invoice.invoiceNumber)">
+            <button class="bg-blue-500 text-white px-2 py-1 rounded" (click)="openHistoryModal(invoice.id, invoice.invoiceNumber)">
+              Historia
+            </button>
+          </td>
+          <td class="border p-2">{{ invoice.invoiceNumber }}</td>
+          <td class="border p-2">{{ invoice.seller.name }}</td>
+          <td class="border p-2">{{ invoice.totalNetAmount }}</td>
+          <td class="border p-2">{{ invoice.totalTaxAmount }}</td>
+          <td class="border p-2">{{ invoice.totalGrossAmount }}</td>
+          <td class="border p-2 text-center" [ngClass]="{
+            'bg-green-200': invoice.status === 'Approved',
+            'bg-yellow-200': invoice.status === 'PendingApproval',
+            'bg-red-200': invoice.status === 'Rejected'
+          }">
+            {{ translateStatus(invoice.status) }}
+          </td>
+          <td class="border p-2" [ngClass]="{
+            'bg-red-300': !isApproved(invoice.status) && isOverdue(invoice.dueDate),
+            'bg-orange-300': !isApproved(invoice.status) && isDueSoon(invoice.dueDate)
+          }">{{ formatDueDate(invoice.dueDate) }}</td>
+          <td class="border p-2 text-center">
+            <button class="bg-blue-500 text-white px-2 py-1 rounded" (click)="openAttachmentModal(invoice.invoiceFileAsBase64)">
+              Pokaż załącznik
+            </button>
+          </td>
+        </tr>
+        </ng-container>
       </tbody>
     </table>
+    <div class="flex justify-between items-center mt-4">
+      <button class="px-4 py-2 bg-gray-500 text-white rounded hover:bg-gray-600" (click)="previousPage()" [disabled]="currentPage === 0">Poprzednia</button>
+      <span>Strona {{ currentPage + 1 }} z {{ totalPages }}</span>
+      <button class="px-4 py-2 bg-gray-500 text-white rounded hover:bg-gray-600" (click)="nextPage()" [disabled]="currentPage >= totalPages - 1">Następna</button>
+    </div>
+  </div>
+
+  <div class="bg-white shadow-md p-4 mb-4">
+    <h2 class="text-lg font-semibold">Zatwierdzone faktury</h2>
+    <table class="w-full border border-gray-200">
+      <thead>
+      <tr class="bg-gray-200">
+        <th class="border p-2">Historia</th>
+        <th class="border p-2">Numer faktury</th>
+        <th class="border p-2">Kontrahent</th>
+        <th class="border p-2">Kwota netto</th>
+        <th class="border p-2">Kwota VAT</th>
+        <th class="border p-2">Kwota brutto</th>
+        <th class="border p-2">Status</th>
+        <th class="border p-2">Termin płatności</th>
+        <th class="border p-2">Podgląd skanu</th>
+      </tr>
+      </thead>
+      <tbody>
+        <ng-container *ngFor="let invoice of paginatedApprovedInvoices">
+        <tr class="bg-green-200">
+          <td class="border p-2 text-center cursor-pointer" *ngIf="invoice.status !== 'New'" (click)="openHistoryModal(invoice.id, invoice.invoiceNumber)">
+            <button class="bg-blue-500 text-white px-2 py-1 rounded" (click)="openHistoryModal(invoice.id, invoice.invoiceNumber)">
+              Historia
+            </button>
+          </td>
+          <td class="border p-2">{{ invoice.invoiceNumber }}</td>
+          <td class="border p-2">{{ invoice.seller.name }}</td>
+          <td class="border p-2">{{ invoice.totalNetAmount }}</td>
+          <td class="border p-2">{{ invoice.totalTaxAmount }}</td>
+          <td class="border p-2">{{ invoice.totalGrossAmount }}</td>
+          <td class="border p-2 text-center" [ngClass]="{
+            'bg-green-200': invoice.status === 'Approved',
+            'bg-yellow-200': invoice.status === 'PendingApproval',
+            'bg-red-200': invoice.status === 'Rejected'
+          }">
+            {{ translateStatus(invoice.status) }}
+          </td>
+          <td class="border p-2">{{ formatDueDate(invoice.dueDate) }}</td>
+          <td class="border p-2 text-center">
+            <button class="bg-blue-500 text-white px-2 py-1 rounded" (click)="openAttachmentModal(invoice.invoiceFileAsBase64)">
+              Pokaż załącznik
+            </button>
+          </td>
+        </tr>
+        </ng-container>
+      </tbody>
+    </table>
+    <div class="flex justify-between items-center mt-4">
+      <button class="px-4 py-2 bg-gray-500 text-white rounded hover:bg-gray-600" (click)="previousApprovedPage()" [disabled]="currentApprovedPage === 0">Poprzednia</button>
+      <span>Strona {{ currentApprovedPage + 1 }} z {{ totalApprovedPages }}</span>
+      <button class="px-4 py-2 bg-gray-500 text-white rounded hover:bg-gray-600" (click)="nextApprovedPage()" [disabled]="currentApprovedPage >= totalApprovedPages - 1">Następna</button>
+    </div>
   </div>
 
   <div *ngIf="selectedInvoice" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
     <div class="bg-white p-6 rounded-lg shadow-lg w-1/3">
-      <h3 class="text-xl font-semibold mb-4">Szczegóły faktury</h3>
-
+      <h3 class="text-xl font-semibold mb-4">Procedura</h3>
       <label class="block mb-2">Ścieżka:</label>
-      <select class="border p-2 w-full mb-3" [(ngModel)]="selectedPath">
-        <option *ngFor="let path of paths" [value]="path.id">
-          {{ path.name }}
+      <select class="border p-2 w-full mb-3" [(ngModel)]="selectedPath" (change)="fetchRecipients()">
+        <option *ngFor="let workflow of workflows" [value]="workflow.id">
+          {{ workflow.name }}
         </option>
       </select>
-
+      <p>Do kogo</p>
       <div class="mb-3">
         <label class="mr-4">
           <input type="radio" [(ngModel)]="selectedRecipientType" value="group" /> Grupa
@@ -52,24 +133,38 @@
         </label>
       </div>
 
-      <label class="block mb-2">Odbiorca:</label>
-      <select class="border p-2 w-full mb-3" [(ngModel)]="selectedRecipient">
-        <ng-container *ngIf="selectedRecipientType === 'group'">
-          <option *ngFor="let group of recipients.groups" [value]="group.id">
-            {{ group.name }}
-          </option>
-        </ng-container>
-        <ng-container *ngIf="selectedRecipientType === 'user'">
+      <ng-container *ngIf="selectedRecipientType === 'group'">
+      </ng-container>
+      <ng-container *ngIf="selectedRecipientType === 'user'">
+        <label class="block mb-2">Odbiorca:</label>
+        <select class="border p-2 w-full mb-3" [(ngModel)]="selectedRecipient">
           <option *ngFor="let user of recipients.users" [value]="user.id">
             {{ user.name }}
           </option>
-        </ng-container>
-      </select>
-
+        </select>
+      </ng-container>
       <div class="flex justify-end gap-2 mt-4">
         <button class="bg-gray-400 text-white px-4 py-2 rounded" (click)="closeModal()">Anuluj</button>
-        <button class="bg-blue-500 text-white px-4 py-2 rounded" (click)="saveInvoice()">Zapisz fakturę</button>
+        <button class="bg-blue-500 text-white px-4 py-2 rounded" (click)="sendInvoiceToWorkflow()">Wyślij fakturę w obieg</button>
       </div>
     </div>
   </div>
+
+  <div *ngIf="selectedAttachment" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
+    <div class="bg-white p-6 rounded-lg shadow-lg w-1/2">
+      <h3 class="text-xl font-semibold mb-4">Załącznik faktury</h3>
+      <img [src]="selectedAttachment" alt="Załącznik faktury" class="w-full h-auto">
+      <div class="flex justify-end gap-2 mt-4">
+        <button class="bg-gray-400 text-white px-4 py-2 rounded" (click)="closeAttachmentModal()">Zamknij</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div *ngIf="selectedInvoiceHistory">
+  <app-history-component
+    [selectedInvoiceHistory]="selectedInvoiceHistory"
+    [selectedInvoiceDocumentNumber]="selectedInvoiceDocumentNumber"
+    (closeHistoryModal)="closeHistoryModal()">
+  </app-history-component>
 </div>

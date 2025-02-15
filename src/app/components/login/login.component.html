@@ -53,19 +53,25 @@
     </div>
     <div class="flex flex-col flex-1 overflow-y-auto">
       <nav class="flex-1 px-2 py-4 bg-gray-800">
-        <a class="flex items-center px-2 py-2 mt-2 text-gray-100 hover:bg-gray-700" routerLink="/" routerLinkActive="active">Strona główna</a>
-        <a class="flex items-center px-2 py-2 mt-2 text-gray-100 hover:bg-gray-700" routerLink="/invoices" routerLinkActive="active">Faktury</a>
+        <div class="mb-6 border border-gray-600 p-1 rounded">
+          <a class="flex items-center px-2 py-2 mt-2 text-gray-100 hover:bg-gray-700" routerLink="/" routerLinkActive="active">Statystyki</a>
+        </div>
         <div class="mb-6 border border-gray-600 p-1 rounded">
           <legend class="text-xl font-bold text-white">Kancelaria</legend>
-          <a class="flex items-center px-2 py-1 mt-2 text-gray-100 hover:bg-gray-700" routerLink="/chambers-index" routerLinkActive="active">Kancelaria</a>
-          <a class="flex items-center px-2 py-1 mt-2 text-gray-100 hover:bg-gray-700" routerLink="/chambers-create" routerLinkActive="active">Zaimportuj fakturę</a>
+          <a class="flex items-center px-2 py-1 mt-2 text-gray-100 hover:bg-gray-700" routerLink="/chambers-index" routerLinkActive="active">Lista faktur</a>
+          <a class="flex items-center px-2 py-1 mt-2 text-gray-100 hover:bg-gray-700" routerLink="/chambers-create" routerLinkActive="active">Dodaj fakturę</a>
+        </div>
+        <div *ngIf="userRoles.includes('User')" class="mb-6 border border-gray-600 p-1 rounded">
+          <legend class="text-xl font-bold text-white">Obieg faktur</legend>
+          <a class="flex items-center px-2 py-1 mt-2 text-gray-100 hover:bg-gray-700" routerLink="/approval-index" routerLinkActive="active">Akceptacja faktur</a>
+          <a class="flex items-center px-2 py-1 mt-2 text-gray-100 hover:bg-gray-700" routerLink="/approval-accepted-invoices" routerLinkActive="active">Zaakceptowane faktury</a>
         </div>
         <div class="mb-6 border border-gray-600 p-1 rounded">
-          <legend class="text-xl font-bold text-white">Obieg faktur</legend>
-          <a class="flex items-center px-2 py-1 mt-2 text-gray-100 hover:bg-gray-700" routerLink="/workflow-index" routerLinkActive="active">Obieg faktur</a>
-          <a class="flex items-center px-2 py-1 mt-2 text-gray-100 hover:bg-gray-700" routerLink="/workflow-create" routerLinkActive="active">Dodaj obieg</a>
+          <legend class="text-xl font-bold text-white">Administracja</legend>
+          <a class="flex items-center px-2 py-1 mt-2 text-gray-100 hover:bg-gray-700" routerLink="/admin-index" routerLinkActive="active">Użytkownicy systemu</a>
+          <a class="flex items-center px-2 py-1 mt-2 text-gray-100 hover:bg-gray-700" routerLink="/workflow-index" routerLinkActive="active">Procedury</a>
+          <a class="flex items-center px-2 py-1 mt-2 text-gray-100 hover:bg-gray-700" routerLink="/workflow-create" routerLinkActive="active">Dodaj procedure</a>
         </div>
-        <a class="flex items-center px-2 py-2 mt-2 text-gray-100 hover:bg-gray-700" routerLink="/about" routerLinkActive="active">O nas</a>
         <button class="mb-auto w-full py-2 px-4 bg-blue-500 hover:bg-blue-700 rounded" (click)="logout()">Wyloguj</button>
       </nav>
     </div>
@@ -90,7 +96,7 @@
         <a class="block px-2 py-2 text-gray-700 hover:bg-gray-100" routerLink="/" routerLinkActive="active" (click)="toggleMobileMenu()">Strona główna</a>
         <a class="block px-2 py-2 text-gray-700 hover:bg-gray-100" routerLink="/invoices" routerLinkActive="active" (click)="toggleMobileMenu()">Faktury</a>
         <a class="block px-2 py-2 text-gray-700 hover:bg-gray-100" routerLink="/chambers-index" routerLinkActive="active">Kancelaria</a>
-        <a class="block px-2 py-2 text-gray-700 hover:bg-gray-100" routerLink="/chambers-create" routerLinkActive="active">Zaimportuj fakturę</a>
+        <a class="block px-2 py-2 text-gray-700 hover:bg-gray-100" routerLink="/chambers-create" routerLinkActive="active">Dodaj fakturę</a>
         <button class="w-full text-left px-2 py-2 text-gray-700 hover:bg-gray-100" (click)="logout()">Wyloguj</button>
       </nav>
     </div>

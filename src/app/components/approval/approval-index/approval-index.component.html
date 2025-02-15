@@ -1,0 +1,135 @@
+<div class="bg-white shadow-md p-4 mb-4">
+  <h2 class="text-2xl font-bold mb-4">Akceptacja faktury</h2>
+
+  <section class="mb-8">
+    <h3 class="text-xl font-semibold mb-2">Przypisane do grupy</h3>
+    <table class="w-full border-collapse">
+      <thead>
+        <tr class="bg-gray-200">
+          <th class="border p-2 text-left">Faktura</th>
+          <th class="border p-2 text-left">Etap</th>
+          <th class="border p-2 text-left">Status</th>
+          <th class="border p-2 text-left">Akcje</th>
+        </tr>
+      </thead>
+      <tbody class="bg-white divide-y divide-gray-200 fixed-height">
+        <tr *ngFor="let approval of paginatedGroupApprovals">
+          <td class="border p-2">{{ approval.documentNumber }}</td>
+          <td class="border p-2">{{ approval.stageLevel }}</td>
+          <td class="border p-2">{{ translateApprovalStatus(approval.status) }}</td>
+          <td class="border p-2 text-center">
+            <button class="bg-green-500 text-white px-2 py-1 rounded" (click)="takeApproval(approval)">
+              Weź fakturę
+            </button>
+          </td>
+        </tr>
+        <tr *ngIf="paginatedGroupApprovals.length === 0">
+          <td class="border p-2 text-center" colspan="4">Brak zatwierdzeń do odebrania</td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="flex justify-between items-center mt-4">
+      <button class="px-4 py-2 bg-gray-500 text-white rounded hover:bg-gray-600" (click)="previousGroupPage()" [disabled]="currentGroupPage === 0">Poprzednia</button>
+      <span>Strona {{ currentGroupPage + 1 }} z {{ totalGroupPages }}</span>
+      <button class="px-4 py-2 bg-gray-500 text-white rounded hover:bg-gray-600" (click)="nextGroupPage()" [disabled]="currentGroupPage >= totalGroupPages - 1">Następna</button>
+    </div>
+  </section>
+
+  <section class="mb-8">
+    <h3 class="text-xl font-semibold mb-2">Przypisane do mnie</h3>
+    <table class="w-full border-collapse">
+      <thead>
+        <tr class="bg-gray-200">
+          <th class="border p-2 text-left">Faktura</th>
+          <th class="border p-2 text-left">Etap</th>
+          <th class="border p-2 text-left">Status</th>
+          <th class="border p-2 text-left">Termin płatności</th>
+          <th class="border p-2 text-left">Akcje</th>
+          <th class="border p-2 text-left">Historia</th>
+          <th class="border p-2 text-left">Załącznik faktury</th>
+        </tr>
+      </thead>
+      <tbody class="bg-white divide-y divide-gray-200 fixed-height">
+        <tr *ngFor="let approval of paginatedMyApprovals" [ngClass]="{
+          'bg-red-300': isOverdue(approval.dueDate),
+          'bg-orange-300': isDueSoon(approval.dueDate)
+        }">
+          <td class="border p-2">{{ approval.documentNumber }}</td>
+          <td class="border p-2">{{ approval.stageLevel }}</td>
+          <td class="border p-2 text-center" [ngClass]="{
+            'bg-sky-100': approval.status === 'Approved',
+            'bg-yellow-100': approval.status === 'AwaitingApprove',
+            'bg-red-200': approval.status === 'Rejected'
+          }">{{ translateApprovalStatus(approval.status) }}</td>
+          <td class="border p-2" [ngClass]="{
+            'bg-red-300': isOverdue(approval.dueDate),
+            'bg-orange-300': isDueSoon(approval.dueDate)
+          }">{{ formatDueDate(approval.dueDate)}}</td>
+          <td class="border p-2 text-center">
+            <button class="bg-blue-500 text-white px-2 py-1 rounded mr-2" (click)="toggleEdit(approval)">
+              Edytuj
+            </button>
+          </td>
+          <td class="border p-2 text-center">
+            <button class="bg-blue-500 text-white px-4 py-2 rounded" (click)="openHistoryModal(approval.invoiceId, approval.documentNumber)">
+              Pokaż historię
+            </button>
+          </td>
+          <td class="border p-2 text-center">
+            <button class="bg-blue-500 text-white px-2 py-1 rounded" (click)="openAttachmentModal(approval.invoiceFileAsBase64)">
+              Pokaż załącznik
+            </button>
+          </td>
+        </tr>
+        <tr *ngIf="paginatedMyApprovals.length === 0">
+          <td class="border p-2 text-center" colspan="7">Brak zatwierdzeń</td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="flex justify-between items-center mt-4">
+      <button class="px-4 py-2 bg-gray-500 text-white rounded hover:bg-gray-600" (click)="previousMyPage()" [disabled]="currentMyPage === 0">Poprzednia</button>
+      <span>Strona {{ currentMyPage + 1 }} z {{ totalMyPages }}</span>
+      <button class="px-4 py-2 bg-gray-500 text-white rounded hover:bg-gray-600" (click)="nextMyPage()" [disabled]="currentMyPage >= totalMyPages - 1">Następna</button>
+    </div>
+  </section>
+
+  <div *ngIf="editingApproval" class="mt-4 p-4 border rounded bg-gray-50">
+    <h4 class="font-semibold mb-2">Faktura: {{ editingApproval.documentNumber }}</h4>
+    <label class="block mb-2">
+      Uwaga (wymagana przy odrzuceniu):
+      <textarea [(ngModel)]="editingApproval.note" class="w-full border p-2 mt-1" rows="3" placeholder="Wpisz uwagę..."></textarea>
+    </label>
+    <div class="flex gap-2 mb-2">
+      <button class="bg-green-500 text-white px-3 py-1 rounded" (click)="acceptApproval(editingApproval)">
+        Akceptuj i wyślij dalej
+      </button>
+      <button class="bg-red-500 text-white px-3 py-1 rounded" (click)="rejectApproval(editingApproval, 'back')">
+        Odrzuć i wyślij do poprzedniego etapu
+      </button>
+      <button class="bg-red-700 text-white px-3 py-1 rounded" (click)="rejectApproval(editingApproval, 'chambers')">
+        Odrzuć i wyślij do kancelarii
+      </button>
+    </div>
+    <button class="bg-gray-400 text-white px-3 py-1 rounded" (click)="cancelEdit()">
+      Anuluj
+    </button>
+  </div>
+
+  <div *ngIf="selectedAttachment" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
+    <div class="bg-white p-6 rounded-lg shadow-lg w-1/2">
+      <h3 class="text-xl font-semibold mb-4">Załącznik faktury</h3>
+      <img [src]="selectedAttachment" alt="Załącznik faktury" class="w-full h-auto">
+      <div class="flex justify-end gap-2 mt-4">
+        <button class="bg-gray-400 text-white px-4 py-2 rounded" (click)="closeAttachmentModal()">Zamknij</button>
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="selectedInvoiceHistory">
+    <app-history-component
+      [selectedInvoiceHistory]="selectedInvoiceHistory"
+      [selectedInvoiceDocumentNumber]="selectedInvoiceDocumentNumber"
+      (closeHistoryModal)="closeHistoryModal()">
+    </app-history-component>
+  </div>
+</div>

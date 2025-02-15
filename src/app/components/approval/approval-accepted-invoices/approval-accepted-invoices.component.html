@@ -1,0 +1,43 @@
+<div class="bg-white shadow-md p-4 mb-4">
+    <h2 class="text-2xl font-bold mb-4">Akceptacja faktury</h2>
+  
+    <section>
+      <h3 class="text-xl font-semibold mb-2">Zaakceptowane faktury</h3>
+      <table class="w-full border-collapse">
+        <thead>
+          <tr class="bg-gray-200">
+            <th class="border p-2 text-left">Faktura</th>
+            <th class="border p-2 text-left">Etap</th>
+            <th class="border p-2 text-left">Status</th>
+            <th class="border p-2 text-left">Historia</th>
+          </tr>
+        </thead>
+        <tbody class="bg-white divide-y divide-gray-200 fixed-height">
+          <tr *ngFor="let approval of paginatedAcceptedApprovals" class="bg-green-200">
+            <td class="border p-2">{{ approval.documentNumber }}</td>
+            <td class="border p-2">{{ approval.stageLevel }}</td>
+            <td class="border p-2">{{ translateApprovalStatus(approval.status) }}</td>
+            <td class="border p-2">
+              <button class="bg-blue-500 text-white px-4 py-2 rounded" (click)="openHistoryModal(approval.invoiceId, approval.documentNumber)">Pokaż historię</button>
+            </td>
+          </tr>
+          <tr *ngIf="paginatedAcceptedApprovals.length === 0">
+            <td class="border p-2 text-center" colspan="4">Brak zaakceptowanych zatwierdzeń</td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="flex justify-between items-center mt-4">
+        <button class="px-4 py-2 bg-gray-500 text-white rounded hover:bg-gray-600" (click)="previousPage()" [disabled]="currentPage === 0">Poprzednia</button>
+        <span>Strona {{ currentPage + 1 }} z {{ totalPages }}</span>
+        <button class="px-4 py-2 bg-gray-500 text-white rounded hover:bg-gray-600" (click)="nextPage()" [disabled]="currentPage >= totalPages - 1">Następna</button>
+      </div>
+    </section>
+  
+    <div *ngIf="selectedInvoiceHistory">
+        <app-history-component
+          [selectedInvoiceHistory]="selectedInvoiceHistory"
+          [selectedInvoiceDocumentNumber]="selectedInvoiceDocumentNumber"
+          (closeHistoryModal)="closeHistoryModal()">
+        </app-history-component>
+      </div>
+  </div>

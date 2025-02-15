@@ -2,7 +2,7 @@ import { Component, Inject, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import {NgFor, NgForOf, NgIf} from "@angular/common";
 import { API } from '../../../api-url.token';
-import { CircuitPathDTO as WorkflowDTO } from '../../../Dtos/CircuitPathDTO';
+import { WorkflowDTO as WorkflowDTO } from '../../../Dtos/WorkflowDTO';
 import { WorkflowService } from '../../../services/workflowService';
 
 
@@ -16,8 +16,8 @@ import { WorkflowService } from '../../../services/workflowService';
   ]
 })
 export class WorkflowIndexComponent implements OnInit {
-  paths: WorkflowDTO[] = [];
-  selectedPath: any;
+  workflows: WorkflowDTO[] = [];
+  selectedWorkflow: WorkflowDTO | undefined;
 
   constructor(private http: HttpClient, private workflowService: WorkflowService) {}
 
@@ -27,15 +27,18 @@ export class WorkflowIndexComponent implements OnInit {
 
   fetchPaths(): void {
     this.workflowService.fetchWorkflows().subscribe(data => {
-      this.paths = data;
+      this.workflows = data.map(workflow => {
+        workflow.stages.sort((a, b) => a.order - b.order);
+        return workflow;
+      });
     });
   }
 
   showDetails(path: any): void {
-    this.selectedPath = path;
+    this.selectedWorkflow = path;
   }
 
   closeModal(): void {
-    this.selectedPath = null;
+    this.selectedWorkflow = undefined;
   }
 }

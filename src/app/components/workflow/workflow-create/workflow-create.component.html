@@ -1,83 +1,82 @@
 <div class="max-w-2xl mx-auto p-4">
-    <div *ngIf="successMessage" class="mb-4 p-4 text-green-700 bg-green-100 border border-green-400 rounded">
-      {{ successMessage }} Przekierowanie do przeglądarki ścieżek..
+  <div *ngIf="successMessage" class="mb-4 p-4 text-green-700 bg-green-100 border border-green-400 rounded">
+    {{ successMessage }} Przekierowanie do przeglądarki ścieżek..
+  </div>
+
+  <div *ngIf="errorMessage" class="mb-4 p-4 text-red-700 bg-red-100 border border-red-400 rounded">
+    {{ errorMessage }}
+  </div>
+
+  <form [formGroup]="workflowForm" (ngSubmit)="onSubmit()">
+    <div class="mb-4">
+      <label for="name" class="block font-medium text-gray-700">Nazwa procedury</label>
+      <input
+        id="name"
+        type="text"
+        formControlName="name"
+        class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring focus:ring-blue-200"
+      />
     </div>
-  
-    <div *ngIf="errorMessage" class="mb-4 p-4 text-red-700 bg-red-100 border border-red-400 rounded">
-      {{ errorMessage }}
-    </div>
-  
-    <form [formGroup]="workflowForm" (ngSubmit)="onSubmit()">
-      <div class="mb-4">
-        <label for="name" class="block font-medium text-gray-700">Nazwa ścieżki</label>
-        <input
-          id="name"
-          type="text"
-          formControlName="name"
-          class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring focus:ring-blue-200"
-        />
-      </div>
-  
-      <div formArrayName="stages">
-        <div
-          *ngFor="let stage of stages.controls; let i = index"
-          [formGroupName]="i"
-          class="border p-4 mb-4 rounded-md"
-        >
-          <div class="flex justify-between items-center">
-            <h3 class="text-lg font-semibold">Etap {{ i + 1 }}</h3>
-            <button
-              type="button"
-              (click)="removeStage(i)"
-              class="text-red-500 hover:text-red-700"
-            >
-              Delete
-            </button>
-          </div>
-          <input type="hidden" formControlName="order" />
-          <div class="mt-2">
-            <label class="block font-medium text-gray-700">Nazwa etapu</label>
-            <input
-              type="text"
-              formControlName="stageName"
-              class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring focus:ring-blue-200"
-            />
-          </div>
-          <div class="mt-2">
-            <label class="block font-medium text-gray-700">Wybierz grupę</label>
-            <select
-              formControlName="group"
-              class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring focus:ring-blue-200"
-            >
-              <option value="" disabled [selected]="!stage.get('group')?.value">
-                -- Wybierz grupę --
-              </option>
-              <option *ngFor="let group of getGroupsForStage(i)" [value]="group.id">
-                {{ group.name }}
-              </option>
-            </select>
-          </div>
+
+    <div formArrayName="stages">
+      <div
+        *ngFor="let stage of stages.controls; let i = index"
+        [formGroupName]="i"
+        class="border p-4 mb-4 rounded-md"
+      >
+        <div class="flex justify-between items-center">
+          <h3 class="text-lg font-semibold">Etap {{ i + 1 }}</h3>
+          <button
+            type="button"
+            (click)="removeStage(i)"
+            class="text-red-500 hover:text-red-700"
+          >
+            Delete
+          </button>
+        </div>
+        <input type="hidden" formControlName="order" />
+        <div class="mt-2">
+          <label class="block font-medium text-gray-700">Nazwa etapu</label>
+          <input
+            type="text"
+            formControlName="stageName"
+            class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring focus:ring-blue-200"
+          />
+        </div>
+        <div class="mt-2">
+          <label class="block font-medium text-gray-700">Wybierz grupę</label>
+          <select
+            formControlName="group"
+            class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring focus:ring-blue-200"
+          >
+            <option value="" disabled [selected]="!stage.get('group')?.value">
+              -- Wybierz grupę --
+            </option>
+            <option *ngFor="let group of getGroupsForStage(i)" [value]="group.id">
+              {{ group.name }}
+            </option>
+          </select>
         </div>
       </div>
-  
-      <div>
-        <button
-          type="button"
-          (click)="addStage()"
-          class="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600"
-        >
-          Dodaj etap
-        </button>
-      </div>
-  
-      <div class="mt-4">
-        <button
-          type="submit"
-          class="bg-green-500 text-white px-4 py-2 rounded-md hover:bg-green-600"
-        >
-          Zapisz ścieżkę
-        </button>
-      </div>
-    </form>
-  </div>
-  
+    </div>
+
+    <div class="flex justify-center mt-4">
+      <button
+        type="button"
+        (click)="addStage()"
+        class="bg-blue-500 text-white w-full max-wpx-4 py-2 rounded-md hover:bg-blue-600"
+      >
+        Dodaj etap
+      </button>
+    </div>
+
+    <div class="flex justify-center mt-4">
+      <button
+        type="submit"
+        class="bg-green-500 text-white w-full max-w px-4 py-2 rounded-md hover:bg-green-600"
+      >
+        Zapisz ścieżkę
+      </button>
+    </div>
+  </form>
+</div>

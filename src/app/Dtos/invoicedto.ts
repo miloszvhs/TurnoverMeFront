@@ -1,10 +1,26 @@
 export interface InvoiceDTO {
+  invoiceNumber: string;
+  status: InvoiceStatus;
+  issueDate: Date;
+  dueDate: Date;
+  seller: PartyDTO;
+  //buyer: PartyDTO;
+  //hasReceiver: boolean;
+  //receiver?: PartyDTO;
+  //deliveryDate: Date | null;
+  //items: ItemDTO[];
+  totalNetAmount: number;
+  totalTaxAmount: number;
+  totalGrossAmount: number;
+  currency: string;
+  remarks: string;
+  invoiceFileAsBase64: string;
+}
+
+export interface InvoiceResponseDTO {
   id: string;
   invoiceNumber: string;
   status: InvoiceStatus;
-  description: string;
-  paymentDue: any;
-  contractor: string;
   issueDate: Date;
   dueDate: Date;
   seller: PartyDTO;
@@ -18,8 +34,21 @@ export interface InvoiceDTO {
   totalGrossAmount: number;
   currency: string;
   remarks: string;
-  fileAsBase64: string;
+  invoiceFileAsBase64: string;
+  approvalHistories: InvoiceApprovalHistoryDTO[];
 }
+
+export interface InvoiceApprovalHistoryDTO {
+  invoiceId: string;
+  executor?: string;
+  creationTime: Date;
+  executionTime?: Date;
+  stageName: string;
+  isAccepted: boolean;
+  note?: string;
+}
+
+
 
 export enum InvoiceStatus {
   New = "New",
@@ -44,7 +73,7 @@ interface TaxNumberDTO {
 
 interface PartyDTO {
   name: string;
-  address: AddressDTO;
+  //address: AddressDTO;
   taxNumber: TaxNumberDTO;
 }
 

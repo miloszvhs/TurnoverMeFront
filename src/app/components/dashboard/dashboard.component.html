@@ -1,23 +1,4 @@
 <div class="dashboard">
-  <div class="invoices-summary my-4">
-    <table class="min-w-full bg-white">
-      <thead>
-      <tr>
-        <th class="py-2 px-4 border">Numer faktury</th>
-        <th class="py-2 px-4 border">Data</th>
-        <th class="py-2 px-4 border">Kwota</th>
-      </tr>
-      </thead>
-      <tbody>
-      <tr *ngFor="let invoice of invoices">
-        <td class="py-2 px-4 border">{{ invoice.invoiceNumber }}</td>
-        <td class="py-2 px-4 border">{{ invoice.issueDate | date }}</td>
-        <td class="py-2 px-4 border">{{ invoice.totalGrossAmount }}</td>
-      </tr>
-      </tbody>
-    </table>
-  </div>
-
   <div class="invoice-dashboard" style="display: flex; justify-content: center; gap: 20px;">
     <div style="display: block; width: 20%; margin: auto;">
       <h3>Wykres faktur - Dzień bieżący</h3>

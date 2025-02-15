@@ -18,7 +18,7 @@ import {FormsModule} from '@angular/forms';
   styleUrl: './login.component.css'
 })
 export class LoginComponent implements OnInit {
-
+  userRoles: string[] = [];
   protected errorMessage: any;
   constructor(private authService: AuthService, private router: Router) {}
 
@@ -41,7 +41,12 @@ export class LoginComponent implements OnInit {
   login() {
     this.authService.login(this.credentials).subscribe({
       next: (response) => {
-        this.router.navigate(['']);
+        if (response.forcePasswordChange) {
+          this.router.navigate(['/change-password']);
+        } else {
+          this.userRoles = this.authService.getUserRoles();
+          this.router.navigate(['']);
+        }
       },
       error: (err) => {
         this.errorMessage = 'Invalid data';
@@ -51,10 +56,14 @@ export class LoginComponent implements OnInit {
 
   logout() {
     this.authService.logout();
+    this.userRoles = [];
   }
 
   ngOnInit() {
-    if(!this.isLoggedIn())
+    if (this.isLoggedIn()) {
+      this.userRoles = this.authService.getUserRoles();
+    } else {
       this.errorMessage = null;
+    }
   }
 }

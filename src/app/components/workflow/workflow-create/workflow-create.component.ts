@@ -3,7 +3,7 @@ import { FormArray, FormControl, FormGroup, ReactiveFormsModule, Validators } fr
 import { GroupService } from '../../../services/group.service';
 import { NgFor, NgIf } from '@angular/common';
 import { WorkflowService } from '../../../services/workflowService';
-import { CircuitPathDTO, WorkflowRequest, GroupDTO, StageDTO } from '../../../Dtos/CircuitPathDTO';
+import { WorkflowDTO, WorkflowRequest, GroupDTO, StageDTO } from '../../../Dtos/WorkflowDTO';
 import { Router } from '@angular/router';
 
 @Component({
@@ -106,6 +106,10 @@ export class WorkflowCreateComponent implements OnInit {
 
   toDto(): WorkflowRequest {
     const formValue = this.workflowForm.value;
+    formValue.stages = formValue.stages.map((stage: any, index: number) => ({
+      ...stage,
+      stageName: `Etap ${index + 1}: ${stage.stageName}`
+    }));
     const stages: StageDTO[] = formValue.stages.map((stage: any) => ({
       order: stage.order,
       name: stage.stageName,
