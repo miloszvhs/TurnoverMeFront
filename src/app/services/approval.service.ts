@@ -1,8 +1,8 @@
 import { Inject, Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { map, Observable } from 'rxjs';
 import { API } from '../api-url.token';
-import { Approval } from '../components/approval/approval-index/approval-index.component';
+import { Approval, ApprovalStatus } from '../components/approval/approval-index/approval-index.component';
 
 export interface EditApproval {
   approvalId: string;
@@ -17,6 +17,7 @@ export interface ApprovalResponse {
   stageName: string;
   isAccepted: boolean;
   note: string;
+  status: string;
 }
 
 export interface InvoiceApproval {
@@ -40,12 +41,25 @@ export class ApprovalService {
     this.apiUrl = apiUrl + "/invoices-approval";
    }
 
+   transform(status: string): string {
+       switch (status) {
+         case ApprovalStatus.AwaitingApprove:
+           return 'Oczekuje na zatwierdzenie';
+         case ApprovalStatus.Approved:
+           return 'Zatwierdzona';
+         case ApprovalStatus.Rejected:
+           return 'Odrzucona';
+         default:
+           return 'Nieznany status';
+       }
+     }
+
    getInvoiceApproval(invoiceApprovalId: string): Observable<InvoiceApproval> {
     const url = `${this.apiUrl}?invoiceApprovalId=${invoiceApprovalId}`;
     return this.http.get<InvoiceApproval>(url);
   }
 
-  sendInvoiceFurther(invoiceId: string, workflowId:string, userId?: string, groupId?: string): Observable<any> {
+  sendInvoiceToWorkflow(invoiceId: string, workflowId:string, userId?: string, groupId?: string): Observable<any> {
     const url = `${this.apiUrl}`;
     
     const request = {
@@ -60,9 +74,15 @@ export class ApprovalService {
 
   getInvoiceApprovalHistories(invoiceId: string): Observable<ApprovalResponse[]> {
     const url = `${this.apiUrl}/history?invoiceId=${invoiceId}`;
-    return this.http.get<ApprovalResponse[]>(url);
+    return this.http.get<ApprovalResponse[]>(url).pipe(
+      map((responses: ApprovalResponse[]) => {
+        return responses.map(response => ({
+          ...response,
+          status: this.transform(response.status)
+        }));
+      })
+    );
   }
-
   saveApprovalHistory(invoiceId: string): Observable<any> {
     const url = `${this.apiUrl}/history`;
     const body = { invoiceId };
@@ -102,14 +122,13 @@ export class ApprovalService {
   }
 
   claimApproval(approvalId: string, userId: string): Observable<any> {
-    const url = `${this.apiUrl}/claim`;
-    const body = { approvalId, userId };
-    return this.http.post(url, body);
+    const url = `${this.apiUrl}/claim?approvalId=${approvalId}&userId=${userId}`;
+    return this.http.post(url, null);
   }
 
-  approveApproval(approvalId: string): Observable<any> {
+  approveApproval(approvalId: string, note: string | undefined): Observable<any> {
     const url = `${this.apiUrl}/approve`;
-    const body = { approvalId };
+    const body = { approvalId, note };
     return this.http.post(url, body);
   }
 

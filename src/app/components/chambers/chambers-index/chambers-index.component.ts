@@ -166,7 +166,7 @@ export class ChambersIndexComponent implements OnInit {
         });
       }
   
-      this.approvalService.sendInvoiceFurther(invoiceId, workflowId, this.selectedRecipient, undefined)
+      this.approvalService.sendInvoiceToWorkflow(invoiceId, workflowId, this.selectedRecipient, undefined)
         .subscribe({
           next: (response) => {
             console.log("Faktura wysłana do pierwszego etapu (użytkownik):", response);
@@ -197,7 +197,7 @@ export class ChambersIndexComponent implements OnInit {
     }
     const groupId = firstStage?.groupId;
 
-    this.approvalService.sendInvoiceFurther(invoiceId, workflowId, undefined, groupId)
+    this.approvalService.sendInvoiceToWorkflow(invoiceId, workflowId, undefined, groupId)
       .subscribe({
         next: (response) => {
           console.log("Faktura wysłana do pierwszego etapu (grupa):", response);
@@ -228,7 +228,7 @@ export class ChambersIndexComponent implements OnInit {
     if (this.selectedPath) {
       const selectedWorkflow = this.workflows.find(workflow => workflow.id === this.selectedPath);
       if (selectedWorkflow && selectedWorkflow.stages.length > 0) {
-        const firstStageGroupId = selectedWorkflow.stages[0].groupId;
+        const firstStageGroupId = selectedWorkflow.stages.sort((a, b) => a.order - b.order)[0].groupId;
         this.fetchUsersByGroup(firstStageGroupId);
       }
     }

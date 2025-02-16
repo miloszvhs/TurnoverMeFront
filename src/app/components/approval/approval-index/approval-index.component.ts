@@ -15,6 +15,8 @@ export interface Approval {
   userId?: string;
   dueDate: Date;
   invoiceFileAsBase64: string;
+  lastApprovalId: string;
+  constantlyRejected: boolean;
 }
 
 export enum ApprovalStatus {
@@ -32,7 +34,6 @@ export enum ApprovalStatus {
     FormsModule,
     NgFor,
     NgClass,
-    DatePipe,
     HistoryComponent
 ]
 })
@@ -73,8 +74,8 @@ export class ApprovalIndexComponent implements OnInit {
 
   refreshApprovals(): void {
     this.approvalService.getGroupApprovals(this.currentUserGroupId).subscribe({
-      next: (approvals: any) => {
-        this.groupApprovals = approvals;
+      next: (approvals: Approval[]) => {
+        this.groupApprovals = approvals.filter(x => x.userId == null);
         this.totalGroupPages = Math.ceil(this.groupApprovals.length / this.pageSize);
         if(this.totalGroupPages == 0)
           this.totalGroupPages = 1;
@@ -87,6 +88,8 @@ export class ApprovalIndexComponent implements OnInit {
       next: (approvals: any) => {
         this.myApprovals = approvals;
         this.totalMyPages = Math.ceil(this.myApprovals.length / this.pageSize);
+        if(this.totalMyPages == 0)
+          this.totalMyPages = 1;
         this.updatePaginatedMyApprovals();
       },
       error: (err: any) => console.error('Błąd pobierania my approvals', err)
@@ -112,7 +115,7 @@ export class ApprovalIndexComponent implements OnInit {
   }
 
   acceptApproval(approval: Approval): void {
-    this.approvalService.approveApproval(approval.id).subscribe({
+    this.approvalService.approveApproval(approval.id, approval.note).subscribe({
       next: () => {
         console.log('Approval zaakceptowany i wysłany dalej.');
         this.editingApproval = null;
@@ -181,14 +184,14 @@ export class ApprovalIndexComponent implements OnInit {
     this.selectedInvoiceId = null;
   }
 
-  translateApprovalStatus(status: ApprovalStatus): string {
+  translateApprovalStatus(status: ApprovalStatus, constantlyRejected: boolean): string {
     switch (status) {
       case ApprovalStatus.AwaitingApprove:
         return 'Oczekuje na zatwierdzenie';
       case ApprovalStatus.Approved:
         return 'Zatwierdzona';
       case ApprovalStatus.Rejected:
-        return 'Odrzucona';
+        return constantlyRejected ? 'Odrzucona (Permanentnie)' : 'Odrzucona';
       default:
         return 'Nieznany status';
     }

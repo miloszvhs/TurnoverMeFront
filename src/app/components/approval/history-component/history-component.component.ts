@@ -7,7 +7,7 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
     NgFor,
     DatePipe,
     NgIf
-  ],
+],
   templateUrl: './history-component.component.html',
   styleUrl: './history-component.component.css'
 })

@@ -16,7 +16,7 @@
         <tr *ngFor="let approval of paginatedGroupApprovals">
           <td class="border p-2">{{ approval.documentNumber }}</td>
           <td class="border p-2">{{ approval.stageLevel }}</td>
-          <td class="border p-2">{{ translateApprovalStatus(approval.status) }}</td>
+          <td class="border p-2">{{ translateApprovalStatus(approval.status, approval.constantlyRejected) }}</td>
           <td class="border p-2 text-center">
             <button class="bg-green-500 text-white px-2 py-1 rounded" (click)="takeApproval(approval)">
               Weź fakturę
@@ -60,15 +60,18 @@
             'bg-sky-100': approval.status === 'Approved',
             'bg-yellow-100': approval.status === 'AwaitingApprove',
             'bg-red-200': approval.status === 'Rejected'
-          }">{{ translateApprovalStatus(approval.status) }}</td>
+          }">{{ translateApprovalStatus(approval.status, approval.constantlyRejected) }}</td>
           <td class="border p-2" [ngClass]="{
             'bg-red-300': isOverdue(approval.dueDate),
             'bg-orange-300': isDueSoon(approval.dueDate)
           }">{{ formatDueDate(approval.dueDate)}}</td>
-          <td class="border p-2 text-center">
+          <td class="border p-2 text-center" *ngIf="!approval.constantlyRejected">
             <button class="bg-blue-500 text-white px-2 py-1 rounded mr-2" (click)="toggleEdit(approval)">
               Edytuj
             </button>
+          </td>
+          <td class="border p-2 text-center" *ngIf="approval.constantlyRejected">
+            X
           </td>
           <td class="border p-2 text-center">
             <button class="bg-blue-500 text-white px-4 py-2 rounded" (click)="openHistoryModal(approval.invoiceId, approval.documentNumber)">

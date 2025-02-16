@@ -10,7 +10,6 @@ import { HistoryComponent } from "../history-component/history-component.compone
   imports: [
     NgFor,
     NgIf,
-    DatePipe,
     HistoryComponent
 ],
   templateUrl: './approval-accepted-invoices.component.html',
