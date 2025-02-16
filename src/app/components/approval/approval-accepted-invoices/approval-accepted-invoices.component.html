@@ -2,7 +2,7 @@
     <h2 class="text-2xl font-bold mb-4">Akceptacja faktury</h2>
   
     <section>
-      <h3 class="text-xl font-semibold mb-2">Zaakceptowane faktury</h3>
+      <h3 class="text-xl font-semibold mb-2">Historyczne faktury</h3>
       <table class="w-full border-collapse">
         <thead>
           <tr class="bg-gray-200">
@@ -13,7 +13,10 @@
           </tr>
         </thead>
         <tbody class="bg-white divide-y divide-gray-200 fixed-height">
-          <tr *ngFor="let approval of paginatedAcceptedApprovals" class="bg-green-200">
+          <tr *ngFor="let approval of paginatedAcceptedApprovals" [ngClass]="{
+            'bg-green-300': approval.status === 'Approved',
+            'bg-red-400': approval.status === 'Rejected'
+          }">
             <td class="border p-2">{{ approval.documentNumber }}</td>
             <td class="border p-2">{{ approval.stageLevel }}</td>
             <td class="border p-2">{{ translateApprovalStatus(approval.status) }}</td>

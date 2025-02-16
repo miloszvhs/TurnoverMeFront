@@ -19,6 +19,7 @@ import {FormsModule} from '@angular/forms';
 })
 export class LoginComponent implements OnInit {
   userRoles: string[] = [];
+  userName: string | null = null;
   protected errorMessage: any;
   constructor(private authService: AuthService, private router: Router) {}
 
@@ -45,6 +46,7 @@ export class LoginComponent implements OnInit {
           this.router.navigate(['/change-password']);
         } else {
           this.userRoles = this.authService.getUserRoles();
+          this.userName = this.authService.getCurrentUserName();
           this.router.navigate(['']);
         }
       },
@@ -62,6 +64,7 @@ export class LoginComponent implements OnInit {
   ngOnInit() {
     if (this.isLoggedIn()) {
       this.userRoles = this.authService.getUserRoles();
+      this.userName = this.authService.getCurrentUserName();
     } else {
       this.errorMessage = null;
     }

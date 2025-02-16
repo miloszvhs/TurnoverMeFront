@@ -28,6 +28,7 @@ export class AuthService {
           const decodedToken = this.jwtHelper.decodeToken(response.jwtToken);
           localStorage.setItem('userId', decodedToken['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/sid']);
           localStorage.setItem('groupId', decodedToken['http://schemas.microsoft.com/ws/2008/06/identity/claims/groupsid'] ?? "");
+          localStorage.setItem('userName', decodedToken['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name'] ?? "");
           document.cookie = `refreshToken=${response.refreshToken}`;
           return response;
         }),
@@ -49,6 +50,7 @@ export class AuthService {
         const decodedToken = this.jwtHelper.decodeToken(response.jwtToken);
         localStorage.setItem('userId', decodedToken['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/sid']);
         localStorage.setItem('groupId', decodedToken['http://schemas.microsoft.com/ws/2008/06/identity/claims/groupsid'] ?? "");
+        localStorage.setItem('userName', decodedToken['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name'] ?? "");
         document.cookie = `refreshToken=${response.refreshToken};`;
         return response;
       }))
@@ -113,6 +115,10 @@ export class AuthService {
 
   getCurrentUser(): string | null {
     return localStorage.getItem('userId');
+  }
+  
+  getCurrentUserName(): string | null {
+    return localStorage.getItem('userName');
   }
 
   getCurrentUserGroup(): string | null {

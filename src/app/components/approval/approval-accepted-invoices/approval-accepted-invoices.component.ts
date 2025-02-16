@@ -1,4 +1,4 @@
-import { DatePipe, NgFor, NgIf } from '@angular/common';
+import { DatePipe, NgClass, NgFor, NgIf } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { ApprovalService } from '../../../services/approval.service';
 import { Approval, ApprovalStatus } from '../approval-index/approval-index.component';
@@ -10,13 +10,14 @@ import { HistoryComponent } from "../history-component/history-component.compone
   imports: [
     NgFor,
     NgIf,
-    HistoryComponent
+    HistoryComponent,
+    NgClass
 ],
   templateUrl: './approval-accepted-invoices.component.html',
   styleUrl: './approval-accepted-invoices.component.css'
 })
 export class ApprovalAcceptedInvoicesComponent implements OnInit {
-  acceptedApprovals: Approval[] = [];    
+  historicalApprovals: Approval[] = [];    
   paginatedAcceptedApprovals: Approval[] = [];
   currentUserId: string = "";
   selectedInvoiceId: string | null = null;
@@ -38,10 +39,10 @@ export class ApprovalAcceptedInvoicesComponent implements OnInit {
   }
 
   refreshApprovals(): void {
-    this.approvalService.getAcceptedApprovals(this.currentUserId).subscribe({
+    this.approvalService.getHistoricalApprovals(this.currentUserId).subscribe({
       next: (approvals: any) => {
-        this.acceptedApprovals = approvals;
-        this.totalPages = Math.ceil(this.acceptedApprovals.length / this.pageSize);
+        this.historicalApprovals = approvals;
+        this.totalPages = Math.ceil(this.historicalApprovals.length / this.pageSize);
         if(this.totalPages == 0)
           this.totalPages = 1;
         this.updatePaginatedAcceptedApprovals();
@@ -70,7 +71,7 @@ export class ApprovalAcceptedInvoicesComponent implements OnInit {
       case ApprovalStatus.Approved:
         return 'Zatwierdzona';
       case ApprovalStatus.Rejected:
-        return 'Odrzucona';
+        return 'Odrzucona (Parmanentnie)';
       default:
         return 'Nieznany status';
     }
@@ -93,6 +94,6 @@ export class ApprovalAcceptedInvoicesComponent implements OnInit {
   updatePaginatedAcceptedApprovals(): void {
     const startIndex = this.currentPage * this.pageSize;
     const endIndex = startIndex + this.pageSize;
-    this.paginatedAcceptedApprovals = this.acceptedApprovals.slice(startIndex, endIndex);
+    this.paginatedAcceptedApprovals = this.historicalApprovals.slice(startIndex, endIndex);
   }
 }

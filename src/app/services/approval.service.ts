@@ -72,6 +72,18 @@ export class ApprovalService {
     return this.http.post(url, request);
   }
 
+  GetFirstRejectedApproval(invoiceId: string): Observable<ApprovalResponse[]> {
+    const url = `${this.apiUrl}/first-rejected?invoiceId=${invoiceId}`;
+    return this.http.get<ApprovalResponse[]>(url).pipe(
+      map((responses: ApprovalResponse[]) => {
+        return responses.map(response => ({
+          ...response,
+          status: this.transform(response.status)
+        }));
+      })
+    );
+  }
+
   getInvoiceApprovalHistories(invoiceId: string): Observable<ApprovalResponse[]> {
     const url = `${this.apiUrl}/history?invoiceId=${invoiceId}`;
     return this.http.get<ApprovalResponse[]>(url).pipe(
@@ -116,8 +128,8 @@ export class ApprovalService {
     return this.http.get<Approval[]>(url);
   }
 
-  getAcceptedApprovals(userId: string): Observable<Approval[]> {
-    const url = `${this.apiUrl}/accepted-approvals?userId=${userId}`;
+  getHistoricalApprovals(userId: string): Observable<Approval[]> {
+    const url = `${this.apiUrl}/historical-approvals?userId=${userId}`;
     return this.http.get<Approval[]>(url);
   }
 
